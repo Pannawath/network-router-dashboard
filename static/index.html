@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark-mono">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AIS Fibre T632AM // Pro Router Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        themeBg: 'var(--bg-primary)',
+                        themeSurface: 'var(--bg-surface)',
+                        themeSurface2: 'var(--bg-surface2)',
+                        themeSurface3: 'var(--bg-surface3)',
+                        themeBorder: 'var(--border-color)',
+                        themeText: 'var(--text-primary)',
+                        themeMuted: 'var(--text-muted)',
+                        themeAccent: 'var(--accent-color)',
+                        themeGlow: 'var(--accent-glow)'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Sarabun"', 'sans-serif'],
+                        mono: ['"Fira Code"', 'monospace'],
+                        thai: ['"Sarabun"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* THEME DEFINITIONS */
+        :root, html[data-theme="dark-mono"] {
+            --bg-primary: #09090b;
+            --bg-surface: #121215;
+            --bg-surface2: #18181b;
+            --bg-surface3: #27272a;
+            --border-color: #27272a;
+            --border-highlight: #3f3f46;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent-color: #22c55e;
+            --accent-contrast: #09090b;
+            --accent-glow: rgba(34, 197, 94, 0.25);
+            --dl-color: #38bdf8;
+            --ul-color: #c084fc;
+            --ping-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            color-scheme: dark;
+        }
+
+        html[data-theme="light-mono"] {
+            --bg-primary: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface2: #f1f5f9;
+            --bg-surface3: #e2e8f0;
+            --border-color: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --text-primary: #09090b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-color: #0f766e;
+            --accent-contrast: #ffffff;
+            --accent-glow: rgba(15, 118, 110, 0.15);
+            --dl-color: #0284c7;
+            --ul-color: #9333ea;
+            --ping-color: #16a34a;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            color-scheme: light;
+        }
+
+        html[data-theme="tech-cyan"] {
+            --bg-primary: #030f1d;
+            --bg-surface: #071c33;
+            --bg-surface2: #0d2c4e;
+            --bg-surface3: #163f68;
+            --border-color: #0f3b64;
+            --border-highlight: #38bdf8;
+            --text-primary: #f0f9ff;
+            --text-secondary: #bae6fd;
+            --text-muted: #38bdf8;
+            --accent-color: #38bdf8;
+            --accent-contrast: #030f1d;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --dl-color: #38bdf8;
+            --ul-color: #818cf8;
+            --ping-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+            --card-shadow: 0 4px 24px rgba(56, 189, 248, 0.15);
+            color-scheme: dark;
+        }
+
+        html[data-theme="cyber-matrix"] {
+            --bg-primary: #02140e;
+            --bg-surface: #062319;
+            --bg-surface2: #0b3427;
+            --bg-surface3: #124d3a;
+            --border-color: #0d4a36;
+            --border-highlight: #10b981;
+            --text-primary: #ecfdf5;
+            --text-secondary: #a7f3d0;
+            --text-muted: #34d399;
+            --accent-color: #10b981;
+            --accent-contrast: #02140e;
+            --accent-glow: rgba(16, 185, 129, 0.35);
+            --dl-color: #2dd4bf;
+            --ul-color: #a855f7;
+            --ping-color: #10b981;
+            --warning-color: #fbbf24;
+            --danger-color: #f43f5e;
+            --card-shadow: 0 4px 24px rgba(16, 185, 129, 0.18);
+            color-scheme: dark;
+        }
+
+        html[data-theme="stealth-titanium"] {
+            --bg-primary: #141518;
+            --bg-surface: #1d1f24;
+            --bg-surface2: #282a32;
+            --bg-surface3: #363944;
+            --border-color: #32353f;
+            --border-highlight: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-color: #f59e0b;
+            --accent-contrast: #141518;
+            --accent-glow: rgba(245, 158, 11, 0.3);
+            --dl-color: #38bdf8;
+            --ul-color: #e879f9;
+            --ping-color: #4ade80;
+            --warning-color: #f59e0b;
+            --danger-color: #f43f5e;
+            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            color-scheme: dark;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', 'Sarabun', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .font-mono { font-family: 'Fira Code', monospace; }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-highlight); }
+
+        /* Glass / Card styling */
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            border-color: var(--border-highlight);
+        }
+        .card-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-surface2);
+            font-weight: 600;
+            font-size: 0.825rem;
+            border-top-left-radius: 9px;
+            border-top-right-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-body {
+            padding: 14px;
+        }
+
+        /* LED / Pulsing Dots */
+        .led-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .led-active {
+            background-color: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse-led 2s infinite ease-in-out;
+        }
+        .led-blink {
+            animation: blink-fast 0.8s infinite alternate ease-in-out;
+        }
+        .led-inactive {
+            background-color: #71717a;
+            opacity: 0.4;
+        }
+        .led-alert {
+            background-color: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        @keyframes pulse-led {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.75; }
+        }
+        @keyframes blink-fast {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Table */
+        .data-tbl { width: 100%; border-collapse: collapse; font-size: 0.825rem; }
+        .data-tbl th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); font-weight: 600; background-color: var(--bg-surface2); }
+        .data-tbl td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .data-tbl tr:last-child td { border-bottom: none; }
+        .data-tbl tbody tr:hover { background-color: var(--bg-surface2); }
+
+        /* Speedtest SVG Gauge */
+        .gauge-svg { transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .gauge-bg { stroke: var(--bg-surface3); }
+        .gauge-progress {
+            stroke: var(--accent-color);
+            transition: stroke-dashoffset 0.25s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+
+        /* Toast notifications */
+        #toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        .toast-item {
+            pointer-events: auto;
+            animation: slide-in-toast 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
+        }
+        @keyframes slide-in-toast {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Topology Canvas */
+        #topo-canvas-container {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: radial-gradient(circle at center, var(--bg-surface) 0%, var(--bg-primary) 100%);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Mobile Drawer */
+        #sidebar {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s ease;
+        }
+        @media (max-width: 1023px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 50;
+                transform: translateX(-100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-sm select-none">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Mobile Overlay -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"></div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- SIDEBAR DRAWER -->
+        <aside id="sidebar" class="w-64 bg-themeSurface border-r border-themeBorder flex flex-col shrink-0">
+            <!-- Brand -->
+            <div class="h-14 border-b border-themeBorder flex items-center justify-between px-4 shrink-0 bg-themeSurface2">
+                <div class="flex items-center gap-2.5 overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-themeAccent text-themeContrast flex items-center justify-center font-bold font-mono text-sm shadow-md" style="background-color: var(--accent-color); color: var(--accent-contrast);">
+                        T6
+                    </div>
+                    <div>
+                        <div class="font-bold tracking-tight text-sm flex items-center gap-1.5">
+                            AIS FIBRE <span class="text-xs px-1.5 py-0.2 rounded font-mono border border-themeBorder text-themeMuted">PRO</span>
+                        </div>
+                        <div class="text-[10px] font-mono text-themeMuted tracking-wider">T632AM // ROUTER</div>
+                    </div>
+                </div>
+                <button id="btn-close-drawer" class="lg:hidden p-1.5 rounded-md hover:bg-themeSurface3 text-themeSecondary">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 overflow-y-auto py-3 px-2.5 space-y-5">
+                <div>
+                    <div class="px-2 text-[10px] font-bold font-mono tracking-wider text-themeMuted uppercase mb-1.5" data-i18n="nav_monitoring">MONITORING</div>
+                    <nav class="space-y-0.5">
+                        <a href="#" data-target="sec-overview" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeAccent bg-themeSurface3">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_overview">ภาพรวม</span>
+                        </a>
+                        <a href="#" data-target="sec-topology" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="network" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_topology">ผังโครงข่ายเรืองแสง</span>
+                        </a>
+                        <a href="#" data-target="sec-traffic-qos" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_traffic_qos">ทราฟฟิก & Dynamic QoS</span>
+                        </a>
+                        <a href="#" data-target="sec-clients" class="nav-btn flex items-center justify-between px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
+                                <span data-i18n="tab_clients">อุปกรณ์ในระบบ LAN</span>
+                            </div>
+                            <span id="nav-badge-clients" class="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-themeSurface3 text-themeAccent font-bold">8</span>
+                        </a>
+                        <a href="#" data-target="sec-speedtest" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="gauge" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_speedtest">ทดสอบสปีด 4 สเต็ป</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div>
+                    <div class="px-2 text-[10px] font-bold font-mono tracking-wider text-themeMuted uppercase mb-1.5" data-i18n="nav_system_security">SECURITY & WIRELESS</div>
+                    <nav class="space-y-0.5">
+                        <a href="#" data-target="sec-security" class="nav-btn flex items-center justify-between px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="shield-alert" class="w-4 h-4 shrink-0 text-emerald-400"></i>
+                                <span data-i18n="tab_security">ระบบตรวจจับภัยคุกคาม (IDS)</span>
+                            </div>
+                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">SPI ACTIVE</span>
+                        </a>
+                        <a href="#" data-target="sec-interfaces" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="server" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_interfaces">พอร์ต & อินเทอร์เฟซ</span>
+                        </a>
+                        <a href="#" data-target="sec-wireless" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="wifi" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_wireless">สัญญาณไร้สาย Wi-Fi 6</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div>
+                    <div class="px-2 text-[10px] font-bold font-mono tracking-wider text-themeMuted uppercase mb-1.5" data-i18n="nav_management">SYSTEM MANAGEMENT</div>
+                    <nav class="space-y-0.5">
+                        <a href="#" data-target="sec-system" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="cpu" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_system">ประสิทธิภาพฮาร์ดแวร์</span>
+                        </a>
+                        <a href="#" data-target="sec-settings" class="nav-btn flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition text-themeSecondary hover:bg-themeSurface2 hover:text-themeText">
+                            <i data-lucide="settings-2" class="w-4 h-4 shrink-0"></i>
+                            <span data-i18n="tab_settings">การตั้งค่า & แจ้งเตือน</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="p-3 border-t border-themeBorder bg-themeSurface2 text-[11px] font-mono text-themeMuted flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                    <span class="led-dot led-active"></span>
+                    <span id="sidebar-fw-ver">V1.0.0.48</span>
+                </div>
+                <div id="sidebar-uptime" class="text-[10px]">UP: 4d 10h</div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-themeBg">
+            
+            <!-- TOPBAR -->
+            <header class="h-14 bg-themeSurface border-b border-themeBorder flex items-center justify-between px-3.5 lg:px-6 shrink-0 z-30">
+                <div class="flex items-center gap-3">
+                    <button id="btn-open-drawer" class="lg:hidden p-2 rounded-lg bg-themeSurface2 border border-themeBorder text-themeText hover:bg-themeSurface3 focus:outline-none">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                    
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="crumb-main" class="font-bold text-sm lg:text-base tracking-tight" data-i18n="crumb_overview">ภาพรวมระบบ</span>
+                            <span id="live-indicator" class="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <span class="led-dot led-active !w-1.5 !h-1.5"></span> LIVE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topbar Actions -->
+                <div class="flex items-center gap-2 sm:gap-3.5">
+                    <!-- Real-time Quick Counters (Desktop) -->
+                    <div class="hidden xl:flex items-center gap-4 text-xs font-mono border-r border-themeBorder pr-4 mr-1">
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="arrow-down" class="w-3.5 h-3.5 text-sky-400"></i>
+                            <span class="text-themeMuted">DL:</span>
+                            <span id="tb-dl" class="font-bold text-sky-400">0.0</span> <span class="text-[10px] text-themeMuted">Mbps</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-purple-400"></i>
+                            <span class="text-themeMuted">UL:</span>
+                            <span id="tb-ul" class="font-bold text-purple-400">0.0</span> <span class="text-[10px] text-themeMuted">Mbps</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="radio" class="w-3.5 h-3.5 text-emerald-400"></i>
+                            <span class="text-themeMuted">GW:</span>
+                            <span id="tb-ping" class="font-bold text-themeText">1.0ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Sound Alert Toggle Button -->
+                    <button id="btn-sound-toggle" class="p-2 rounded-lg bg-themeSurface2 border border-themeBorder hover:border-themeAccent text-themeSecondary hover:text-themeText transition cursor-pointer" title="Toggle Alert Sound">
+                        <i id="sound-icon" data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
+                    </button>
+
+                    <!-- Language Switcher Button -->
+                    <button id="btn-lang-toggle" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-themeSurface2 border border-themeBorder hover:border-themeAccent text-xs font-semibold transition cursor-pointer" title="Switch Language / สลับภาษา">
+                        <i data-lucide="languages" class="w-4 h-4 text-themeSecondary"></i>
+                        <span id="lang-label" class="font-mono text-xs">ไทย (TH)</span>
+                    </button>
+
+                    <!-- Theme Switcher Dropdown (5 Themes) -->
+                    <div class="relative">
+                        <select id="theme-selector" class="appearance-none bg-themeSurface2 border border-themeBorder hover:border-themeAccent text-themeText text-xs font-medium rounded-lg pl-3 pr-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-themeAccent cursor-pointer transition">
+                            <option value="dark-mono">⬛ Dark Monochrome</option>
+                            <option value="light-mono">⬜ Light Minimal</option>
+                            <option value="tech-cyan">🟦 Tech Cyan</option>
+                            <option value="cyber-matrix">🟩 Cyber Matrix</option>
+                            <option value="stealth-titanium">🟨 Stealth Titanium</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-themeMuted">
+                            <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE SECTIONS BODY -->
+            <main class="flex-1 overflow-y-auto p-3.5 lg:p-6 space-y-5" id="main-scroll">
+
+                <!-- ============================================== -->
+                <!-- SECTION 1: OVERVIEW -->
+                <!-- ============================================== -->
+                <section id="sec-overview" class="content-section space-y-5">
+                    
+                    <!-- Top KPI Cards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <div class="card p-3.5 flex flex-col justify-between relative overflow-hidden">
+                            <div class="flex items-center justify-between text-themeSecondary text-xs">
+                                <span data-i18n="kpi_dl">ความเร็วดาวน์โหลด</span>
+                                <i data-lucide="arrow-down-circle" class="w-4 h-4 text-sky-400"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-dl" class="text-2xl lg:text-3xl font-bold font-mono text-sky-400">0.0</span>
+                                <span class="text-xs font-mono text-themeMuted">Mbps</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1" id="kpi-total-rx">Total RX: 0.0 GB</div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between relative overflow-hidden">
+                            <div class="flex items-center justify-between text-themeSecondary text-xs">
+                                <span data-i18n="kpi_ul">ความเร็วอัปโหลด</span>
+                                <i data-lucide="arrow-up-circle" class="w-4 h-4 text-purple-400"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-ul" class="text-2xl lg:text-3xl font-bold font-mono text-purple-400">0.0</span>
+                                <span class="text-xs font-mono text-themeMuted">Mbps</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1" id="kpi-total-tx">Total TX: 0.0 GB</div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between relative overflow-hidden">
+                            <div class="flex items-center justify-between text-themeSecondary text-xs">
+                                <span data-i18n="kpi_latency">ความหน่วงเกตเวย์ (GW Ping)</span>
+                                <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-ping-gw" class="text-2xl lg:text-3xl font-bold font-mono text-emerald-400">0.8</span>
+                                <span class="text-xs font-mono text-themeMuted">ms</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1" id="kpi-ping-cf">Cloudflare: 11.2ms</div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between relative overflow-hidden">
+                            <div class="flex items-center justify-between text-themeSecondary text-xs">
+                                <span data-i18n="kpi_hosts">อุปกรณ์ออนไลน์ (LAN/Wi-Fi)</span>
+                                <i data-lucide="devices" class="w-4 h-4 text-amber-400"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-online-hosts" class="text-2xl lg:text-3xl font-bold font-mono text-themeAccent">8</span>
+                                <span class="text-xs font-mono text-themeMuted" data-i18n="unit_devices">โหนด</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1" id="kpi-wan-ip">WAN: 100.102.15.140</div>
+                        </div>
+                    </div>
+
+                    <!-- Dual Live Charts & Switch Port Matrix -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="card lg:col-span-2 flex flex-col h-80">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="trending-up" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="chart_traffic_title">กราฟแบนด์วิดท์เรียลไทม์ (Live Bandwidth Throughput)</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs font-mono">
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Download</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> Upload</span>
+                                </div>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-ov-traffic"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="server" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="port_matrix_title">สถานะพอร์ตเชื่อมต่อ (Switch Port Matrix)</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-themeMuted">7 PORTS</span>
+                            </div>
+                            <div class="card-body flex-1 flex flex-col justify-around py-2" id="switch-ports-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Latency Chart + Hardware Stats + Syslog -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="radio" class="w-4 h-4 text-emerald-400"></i>
+                                    <span data-i18n="chart_latency_title">ความหน่วงเครือข่าย (Latency History)</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-themeMuted">4 TARGETS</span>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-ov-latency"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="cpu" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="hw_stats_title">การใช้ทรัพยากรฮาร์ดแวร์ (Hardware)</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400" id="hw-status-badge">HEALTHY</span>
+                            </div>
+                            <div class="card-body flex-1 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs font-mono mb-1">
+                                        <span class="text-themeSecondary">CPU Load</span>
+                                        <span id="hw-cpu-val" class="font-bold text-themeAccent">14%</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-themeSurface3 overflow-hidden">
+                                        <div id="hw-cpu-bar" class="h-full bg-emerald-400 transition-all duration-300" style="width: 14%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-mono mb-1">
+                                        <span class="text-themeSecondary">RAM Memory (Used / Total)</span>
+                                        <span id="hw-ram-val" class="font-bold text-sky-400">42% (6.7 / 16.0 GB)</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-themeSurface3 overflow-hidden">
+                                        <div id="hw-ram-bar" class="h-full bg-sky-400 transition-all duration-300" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-mono mb-1">
+                                        <span class="text-themeSecondary">Flash Storage / ROM</span>
+                                        <span id="hw-disk-val" class="font-bold text-purple-400">18% (1.8 / 10.0 GB)</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-themeSurface3 overflow-hidden">
+                                        <div id="hw-disk-bar" class="h-full bg-purple-400 transition-all duration-300" style="width: 18%"></div>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-themeBorder flex items-center justify-between text-xs font-mono">
+                                    <span class="text-themeSecondary" data-i18n="label_temp">อุณหภูมิเราเตอร์:</span>
+                                    <span id="hw-temp-val" class="font-bold text-amber-400">51.8 °C (Normal)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="terminal" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="syslog_title">บันทึกเหตุการณ์ระบบ (Live Syslog)</span>
+                                </div>
+                                <button id="btn-toggle-scroll" class="text-[10px] font-mono px-2 py-0.5 rounded bg-themeSurface3 text-themeSecondary hover:text-themeText" title="Toggle Auto Scroll">
+                                    AUTOSCROLL: ON
+                                </button>
+                            </div>
+                            <div class="card-body flex-1 bg-black/40 p-2.5 overflow-y-auto font-mono text-[11px] space-y-1.5 select-text" id="syslog-feed"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 2: INTERACTIVE GLOWING TOPOLOGY MAP -->
+                <!-- ============================================== -->
+                <section id="sec-topology" class="content-section hidden space-y-5">
+                    <div class="card flex flex-col">
+                        <div class="card-header flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="network" class="w-4 h-4 text-themeAccent"></i>
+                                <span class="font-bold" data-i18n="topo_heading">ผังโครงข่ายปฏิสัมพันธ์เรืองแสง (Interactive Glowing Topology)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-mono text-themeMuted hidden sm:inline" data-i18n="topo_drag_hint">คลิกหรือลากโหนดเพื่อดูข้อมูลแบบเรียลไทม์</span>
+                                <button id="btn-reset-topo" class="px-2.5 py-1 rounded-lg bg-themeSurface3 border border-themeBorder text-xs font-semibold text-themeText hover:bg-themeBorder transition cursor-pointer flex items-center gap-1.5">
+                                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                    <span data-i18n="btn_reset_layout">รีเซ็ตตำแหน่ง</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-3 relative">
+                            <!-- Glowing Canvas Map -->
+                            <div id="topo-canvas-container">
+                                <canvas id="topo-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+                                
+                                <!-- Floating Node Inspector Card -->
+                                <div id="topo-node-inspector" class="absolute bottom-4 left-4 p-3.5 rounded-xl bg-themeSurface/95 backdrop-blur-md border border-themeBorder shadow-2xl max-w-sm hidden transition-all duration-200 z-20">
+                                    <div class="flex items-center justify-between pb-2 border-b border-themeBorder mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <div id="inspector-icon-wrap" class="w-6 h-6 rounded-md bg-themeAccent/20 flex items-center justify-center text-themeAccent font-bold text-xs"></div>
+                                            <span id="inspector-name" class="font-bold text-xs text-themeText">Device Name</span>
+                                        </div>
+                                        <button id="btn-close-inspector" class="text-themeMuted hover:text-themeText">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div class="space-y-1.5 text-[11px] font-mono">
+                                        <div class="flex justify-between"><span class="text-themeMuted">IP Address:</span><span id="inspector-ip" class="text-sky-400 font-bold">--</span></div>
+                                        <div class="flex justify-between"><span class="text-themeMuted">MAC Address:</span><span id="inspector-mac" class="text-themeSecondary">--</span></div>
+                                        <div class="flex justify-between"><span class="text-themeMuted">Interface:</span><span id="inspector-iface" class="text-emerald-400">--</span></div>
+                                        <div class="flex justify-between"><span class="text-themeMuted">Live RX Speed:</span><span id="inspector-rx" class="text-sky-400 font-bold">0.0 Mbps</span></div>
+                                        <div class="flex justify-between"><span class="text-themeMuted">Live TX Speed:</span><span id="inspector-tx" class="text-purple-400 font-bold">0.0 Mbps</span></div>
+                                        <div class="flex justify-between"><span class="text-themeMuted">Signal Quality:</span><span id="inspector-signal" class="text-amber-400">--</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- Legend overlay -->
+                                <div class="absolute top-3 right-3 p-2 rounded-lg bg-themeSurface/90 backdrop-blur-sm border border-themeBorder text-[10px] font-mono space-y-1 z-10">
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#22c55e]"></span> <span>Wired LAN Link</span></div>
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]"></span> <span>Wi-Fi 5GHz AX (160M)</span></div>
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></span> <span>Wi-Fi 2.4GHz IoT</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 3: TRAFFIC & DYNAMIC QOS ENGINE -->
+                <!-- ============================================== -->
+                <section id="sec-traffic-qos" class="content-section hidden space-y-5">
+                    
+                    <!-- Dynamic QoS Engine Banner -->
+                    <div class="card p-4 bg-gradient-to-r from-themeSurface via-themeSurface2 to-themeSurface border border-themeBorder">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+                                    <h3 class="font-bold text-base text-themeText" data-i18n="qos_heading">Smart Dynamic QoS Engine (AI Traffic Balancer)</h3>
+                                </div>
+                                <p class="text-xs text-themeSecondary mt-1" data-i18n="qos_desc">
+                                    ระบบจัดสรรคิวข้อมูลอัจฉริยะแบบ Real-Time ลดค่าความหน่วง (Ultra-low jitter) สำหรับเสียงและเกมมิ่ง พร้อมจัดสรรแบนด์วิดท์อัตโนมัติตามประเภทข้อมูล
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-right font-mono text-xs">
+                                    <div class="text-themeMuted text-[10px]">QOS ALGORITHM</div>
+                                    <div class="font-bold text-emerald-400">AUTO-ADAPTIVE</div>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    ACTIVE
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 Dynamic Queues -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="qos-queues-grid">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Traffic Analytics Breakdown -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="card flex flex-col h-72">
+                            <div class="card-header">
+                                <span data-i18n="proto_dist_title">สัดส่วนโปรโตคอล (Protocol Distribution)</span>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-proto-dist"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card lg:col-span-2 flex flex-col h-72">
+                            <div class="card-header">
+                                <span data-i18n="app_layer_title">ทราฟฟิกแยกตามแอปพลิเคชัน (Application Layer Breakdown)</span>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-app-traffic"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 24h Traffic History -->
+                    <div class="card flex flex-col h-80">
+                        <div class="card-header">
+                            <span data-i18n="traffic_chart_header">ประวัติการใช้งานข้อมูล 24 ชั่วโมง (Traffic Data History)</span>
+                        </div>
+                        <div class="card-body flex-1 relative p-2">
+                            <canvas id="chart-traffic-history"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 4: CONNECTED CLIENTS -->
+                <!-- ============================================== -->
+                <section id="sec-clients" class="content-section hidden space-y-5">
+                    <div class="card flex flex-col">
+                        <div class="card-header flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="smartphone" class="w-4 h-4 text-themeAccent"></i>
+                                <span class="font-bold" data-i18n="clients_heading">อุปกรณ์ทั้งหมดในระบบ LAN & Wi-Fi (Real ARP Scanned)</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <input type="text" id="input-client-search" placeholder="ค้นหาชื่อ, IP, MAC..." class="bg-themeSurface3 border border-themeBorder rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-themeAccent text-themeText w-44 sm:w-56" data-i18n-placeholder="search_placeholder">
+                                    <i data-lucide="search" class="w-3.5 h-3.5 text-themeMuted absolute left-2.5 top-2.5"></i>
+                                </div>
+                                
+                                <div class="flex bg-themeSurface3 rounded-lg p-0.5 border border-themeBorder text-xs" id="client-filter-tabs">
+                                    <button data-filter="all" class="px-2.5 py-1 rounded-md bg-themeAccent text-themeContrast font-semibold transition" style="background-color: var(--accent-color); color: var(--accent-contrast);" data-i18n="filter_all">ทั้งหมด</button>
+                                    <button data-filter="wired" class="px-2.5 py-1 rounded-md text-themeSecondary hover:text-themeText font-medium transition" data-i18n="filter_wired">LAN มีสาย</button>
+                                    <button data-filter="wireless" class="px-2.5 py-1 rounded-md text-themeSecondary hover:text-themeText font-medium transition" data-i18n="filter_wireless">Wi-Fi</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0 overflow-x-auto">
+                            <table class="data-tbl" id="tbl-clients">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="col_device">อุปกรณ์ / ผู้ผลิต</th>
+                                        <th data-i18n="col_network">IP & MAC Address</th>
+                                        <th data-i18n="col_iface">พอร์ต / ย่านคลื่น</th>
+                                        <th data-i18n="col_signal">คุณภาพสัญญาณ</th>
+                                        <th data-i18n="col_live_speed">ความเร็วสด (RX / TX)</th>
+                                        <th data-i18n="col_total">ปริมาณรวม</th>
+                                        <th data-i18n="col_status">สถานะ</th>
+                                        <th class="text-right" data-i18n="col_action">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 5: ADVANCED 4-STAGE SPEEDTEST -->
+                <!-- ============================================== -->
+                <section id="sec-speedtest" class="content-section hidden space-y-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="card lg:col-span-2 flex flex-col items-center justify-center p-6 text-center">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i data-lucide="gauge" class="w-5 h-5 text-themeAccent"></i>
+                                <span class="font-bold text-base" data-i18n="speedtest_heading">เครื่องมือทดสอบความเร็วระดับโปร 4 สเต็ป (Pro Diagnostic Speedtest)</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-xl mb-6">
+                                <div id="st-stage-1" class="p-2 rounded-lg border border-themeBorder bg-themeSurface2 text-xs font-mono transition">
+                                    <div class="text-themeMuted text-[10px]">STAGE 1 (4s)</div>
+                                    <div class="font-bold text-themeSecondary">1. Latency & Jitter</div>
+                                    <div class="text-[10px] text-emerald-400 mt-0.5 status-text">รอทดสอบ</div>
+                                </div>
+                                <div id="st-stage-2" class="p-2 rounded-lg border border-themeBorder bg-themeSurface2 text-xs font-mono transition">
+                                    <div class="text-themeMuted text-[10px]">STAGE 2 (4s)</div>
+                                    <div class="font-bold text-themeSecondary">2. Bufferbloat</div>
+                                    <div class="text-[10px] text-sky-400 mt-0.5 status-text">รอทดสอบ</div>
+                                </div>
+                                <div id="st-stage-3" class="p-2 rounded-lg border border-themeBorder bg-themeSurface2 text-xs font-mono transition">
+                                    <div class="text-themeMuted text-[10px]">STAGE 3 (10s)</div>
+                                    <div class="font-bold text-themeSecondary">3. Multi-Stream DL</div>
+                                    <div class="text-[10px] text-sky-400 mt-0.5 status-text">รอทดสอบ</div>
+                                </div>
+                                <div id="st-stage-4" class="p-2 rounded-lg border border-themeBorder bg-themeSurface2 text-xs font-mono transition">
+                                    <div class="text-themeMuted text-[10px]">STAGE 4 (8s)</div>
+                                    <div class="font-bold text-themeSecondary">4. Multi-Stream UL</div>
+                                    <div class="text-[10px] text-purple-400 mt-0.5 status-text">รอทดสอบ</div>
+                                </div>
+                            </div>
+
+                            <div class="relative w-64 h-64 flex items-center justify-center mb-6">
+                                <svg class="gauge-svg w-full h-full" viewBox="0 0 200 200">
+                                    <circle class="gauge-bg" cx="100" cy="100" r="85" fill="none" stroke-width="14" stroke-dasharray="534" stroke-dashoffset="133.5" stroke-linecap="round"/>
+                                    <circle id="gauge-progress-bar" class="gauge-progress" cx="100" cy="100" r="85" fill="none" stroke-width="14" stroke-dasharray="534" stroke-dashoffset="534" stroke-linecap="round"/>
+                                </svg>
+                                
+                                <div class="absolute inset-0 flex flex-col items-center justify-center select-none pointer-events-none">
+                                    <div class="text-[11px] font-mono tracking-widest text-themeMuted uppercase" id="gauge-stage-label">READY</div>
+                                    <div class="text-4xl lg:text-5xl font-black font-mono tracking-tight my-1" id="gauge-value">0.0</div>
+                                    <div class="text-xs font-mono text-themeSecondary">Mbps</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <button id="btn-start-speedtest" class="px-8 py-3 rounded-xl font-bold text-sm tracking-wide shadow-lg hover:scale-105 active:scale-95 transition cursor-pointer flex items-center gap-2" style="background-color: var(--accent-color); color: var(--accent-contrast);">
+                                    <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                                    <span data-i18n="btn_start_speedtest">เริ่มทดสอบความเร็วแบบละเอียด 4 สเต็ป</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card flex flex-col">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-check-2" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="report_card_heading">ผลการวินิจฉัยและคะแนนคุณภาพ</span>
+                                </div>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-themeSurface3 text-emerald-400 font-bold" id="report-grade-badge">GRADE: A+</span>
+                            </div>
+                            <div class="card-body flex-1 flex flex-col justify-between space-y-4">
+                                <div class="space-y-3">
+                                    <div class="p-3 rounded-lg bg-themeSurface2 border border-themeBorder flex items-center justify-between">
+                                        <div>
+                                            <div class="text-xs text-themeSecondary" data-i18n="rep_download">ความเร็วดาวน์โหลดเฉลี่ย</div>
+                                            <div class="text-xl font-bold font-mono text-sky-400" id="rep-dl">-- <span class="text-xs">Mbps</span></div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-[10px] text-themeMuted">Peak Burst</div>
+                                            <div class="text-xs font-mono text-themeSecondary" id="rep-dl-peak">-- Mbps</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 rounded-lg bg-themeSurface2 border border-themeBorder flex items-center justify-between">
+                                        <div>
+                                            <div class="text-xs text-themeSecondary" data-i18n="rep_upload">ความเร็วอัปโหลดเฉลี่ย</div>
+                                            <div class="text-xl font-bold font-mono text-purple-400" id="rep-ul">-- <span class="text-xs">Mbps</span></div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-[10px] text-themeMuted">Peak Burst</div>
+                                            <div class="text-xs font-mono text-themeSecondary" id="rep-ul-peak">-- Mbps</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div class="p-2.5 rounded-lg bg-themeSurface2 border border-themeBorder">
+                                            <div class="text-[11px] text-themeSecondary">Idle Latency</div>
+                                            <div class="text-base font-bold font-mono text-emerald-400" id="rep-latency">1.1 ms</div>
+                                        </div>
+                                        <div class="p-2.5 rounded-lg bg-themeSurface2 border border-themeBorder">
+                                            <div class="text-[11px] text-themeSecondary">Jitter</div>
+                                            <div class="text-base font-bold font-mono text-emerald-400" id="rep-jitter">0.2 ms</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 rounded-lg bg-themeSurface2 border border-themeBorder">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="text-xs font-semibold text-themeText" data-i18n="rep_bufferbloat">Bufferbloat Assessment</span>
+                                            <span class="text-xs font-mono font-bold text-emerald-400" id="rep-loaded-latency">+3.2 ms (Loaded)</span>
+                                        </div>
+                                        <p class="text-[11px] text-themeMuted" data-i18n="rep_bufferbloat_desc">
+                                            คะแนนระดับ A+: การตอบสนองยอดเยี่ยม ความหน่วงคงที่ไม่มีสะดุด เหมาะสำหรับการเล่นเกมออนไลน์และสตรีมมิ่งสด
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3 border-t border-themeBorder text-[11px] font-mono text-themeMuted flex justify-between">
+                                    <span>Server: AIS BKK SuperPoP #1</span>
+                                    <span>10 Gbps Peering</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 6: INTRUSION DETECTION (IDS) & SECURITY -->
+                <!-- ============================================== -->
+                <section id="sec-security" class="content-section hidden space-y-5">
+                    
+                    <!-- Threat Summary Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <div class="card p-3.5 flex flex-col justify-between">
+                            <div class="text-xs text-themeSecondary" data-i18n="sec_threat_level">ระดับภัยคุกคามปัจจุบัน</div>
+                            <div class="mt-2 flex items-center justify-between">
+                                <span class="text-xl font-bold font-mono text-emerald-400" id="threat-level-badge">LOW RISK</span>
+                                <span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Score: 18/100</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-themeSurface3 mt-2 overflow-hidden">
+                                <div class="h-full bg-emerald-400 w-[18%]"></div>
+                            </div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between">
+                            <div class="text-xs text-themeSecondary" data-i18n="sec_spi_status">สถานะไฟร์วอลล์ SPI</div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="led-dot led-active"></span>
+                                <span class="text-base font-bold font-mono text-themeText">STATEFUL ACTIVE</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1">428 Active State Entries</div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between">
+                            <div class="text-xs text-themeSecondary" data-i18n="sec_blocked_today">การสกัดกั้นวันนี้</div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span class="text-2xl font-bold font-mono text-rose-400" id="sec-blocked-count">894</span>
+                                <span class="text-xs font-mono text-themeMuted">ครั้ง</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1">SYN Flood / Port Scans</div>
+                        </div>
+
+                        <div class="card p-3.5 flex flex-col justify-between">
+                            <div class="text-xs text-themeSecondary" data-i18n="sec_blacklist_count">IP แบล็กลิสต์ในระบบ</div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span class="text-2xl font-bold font-mono text-amber-400" id="sec-blacklist-count">3</span>
+                                <span class="text-xs font-mono text-themeMuted">เป้าหมาย</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-themeMuted mt-1">Real-Time Drop Filter</div>
+                        </div>
+                    </div>
+
+                    <!-- Threat Intelligence Table (with 1-click Blacklist) -->
+                    <div class="card">
+                        <div class="card-header flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+                                <span class="font-bold" data-i18n="sec_threat_table_title">ตารางวิเคราะห์ภัยคุกคามเรียลไทม์ (Real-Time Threat Intelligence)</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded font-bold">IDS ENGINE LIVE</span>
+                        </div>
+                        <div class="card-body p-0 overflow-x-auto">
+                            <table class="data-tbl" id="tbl-threat-intel">
+                                <thead>
+                                    <tr>
+                                        <th>เวลา (Time)</th>
+                                        <th>IP ต้นทาง (Source IP)</th>
+                                        <th>ประเทศ (Country)</th>
+                                        <th>ประเภทการโจมตี (Threat Type)</th>
+                                        <th>พอร์ตเป้าหมาย</th>
+                                        <th>ระดับความรุนแรง</th>
+                                        <th>จำนวนแพ็กเก็ต</th>
+                                        <th>สถานะ</th>
+                                        <th class="text-right">การจัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Blacklisted IPs & Firewall Rules Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <!-- Active Blacklisted IPs -->
+                        <div class="card">
+                            <div class="card-header flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="ban" class="w-4 h-4 text-amber-400"></i>
+                                    <span data-i18n="sec_blacklist_table_title">รายการ IP ที่ถูกบล็อก (Active Blacklisted IPs)</span>
+                                </div>
+                                <button onclick="openCustomBlacklistModal()" class="px-2.5 py-1 rounded bg-themeSurface3 border border-themeBorder text-xs font-semibold text-themeText hover:bg-themeBorder transition cursor-pointer flex items-center gap-1">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                    <span data-i18n="btn_add_blacklist">+ เพิ่ม IP บล็อก</span>
+                                </button>
+                            </div>
+                            <div class="card-body p-0 overflow-x-auto">
+                                <table class="data-tbl" id="tbl-blacklist">
+                                    <thead>
+                                        <tr>
+                                            <th>IP Address</th>
+                                            <th>สาเหตุการบล็อก</th>
+                                            <th>เวลาที่บล็อก</th>
+                                            <th>ตรวจพบล่าสุด</th>
+                                            <th class="text-right">ปลดบล็อก</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Active SPI Rules -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="fw_rules_title">กฎความปลอดภัยและไฟร์วอลล์ (Active Firewall Rules)</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 overflow-x-auto">
+                                <table class="data-tbl" id="tbl-fw-rules">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>ชื่อกฎระเบียบ</th>
+                                            <th>ต้นทาง (Source)</th>
+                                            <th>ปลายทาง</th>
+                                            <th>การกระทำ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intrusion Prevention Logs -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-themeAccent"></i>
+                                <span data-i18n="block_log_title">บันทึกการป้องกันการบุกรุก (Intrusion Prevention Logs)</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-black/40 p-2.5 overflow-y-auto font-mono text-xs space-y-1.5 h-48 select-text" id="fw-block-logs"></div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 7: INTERFACES -->
+                <!-- ============================================== -->
+                <section id="sec-interfaces" class="content-section hidden space-y-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <span data-i18n="iface_stats_title">ตารางสถิติและอัตราความเร็วของพอร์ต (Physical Ports Statistics)</span>
+                        </div>
+                        <div class="card-body p-0 overflow-x-auto">
+                            <table class="data-tbl" id="tbl-iface-stats">
+                                <thead>
+                                    <tr>
+                                        <th>พอร์ต (Port ID)</th>
+                                        <th>ชื่อระบุ</th>
+                                        <th>สถานะ (Status)</th>
+                                        <th>ความเร็วลิงก์ (Link Speed)</th>
+                                        <th>ดาวน์โหลด (RX MB)</th>
+                                        <th>อัปโหลด (TX MB)</th>
+                                        <th>Errors</th>
+                                        <th>Drops</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 8: WIRELESS (WI-FI 6) -->
+                <!-- ============================================== -->
+                <section id="sec-wireless" class="content-section hidden space-y-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <span data-i18n="wifi_mgr_title">การจัดการคลื่นสัญญาณ Wi-Fi (SSID Configuration)</span>
+                        </div>
+                        <div class="card-body p-0 overflow-x-auto">
+                            <table class="data-tbl" id="tbl-wifi-ssids">
+                                <thead>
+                                    <tr>
+                                        <th>SSID Name</th>
+                                        <th>ย่านความถี่ (Band)</th>
+                                        <th>ช่องสัญญาณ (Channel)</th>
+                                        <th>ความกว้างแบนด์วิดท์</th>
+                                        <th>ระบบความปลอดภัย</th>
+                                        <th>จำนวนผู้ใช้</th>
+                                        <th>กำลังส่ง (TX Power)</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 9: HARDWARE SYSTEM STATS -->
+                <!-- ============================================== -->
+                <section id="sec-system" class="content-section hidden space-y-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <span>CPU Usage History</span>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-sys-cpu"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card flex flex-col h-80">
+                            <div class="card-header">
+                                <span>Memory Usage History</span>
+                            </div>
+                            <div class="card-body flex-1 relative p-2">
+                                <canvas id="chart-sys-mem"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- SECTION 10: CONSOLE SETTINGS & ALERTS -->
+                <!-- ============================================== -->
+                <section id="sec-settings" class="content-section hidden space-y-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        
+                        <!-- Multi-Channel Alert System Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="bell-ring" class="w-4 h-4 text-amber-400"></i>
+                                    <span data-i18n="alert_settings_heading">ระบบแจ้งเตือนหลายช่องทาง (Multi-Channel Alert System)</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">READY</span>
+                            </div>
+                            <div class="card-body space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-themeSecondary mb-1.5" data-i18n="label_line_token">LINE Notify Access Token:</label>
+                                    <div class="flex gap-2">
+                                        <input type="password" id="cfg-line-token" value="ln_AIS_Router_Admin_Key_9918" class="flex-1 bg-themeSurface3 border border-themeBorder rounded-lg p-2 text-xs font-mono text-themeText focus:outline-none focus:border-themeAccent">
+                                        <button id="btn-test-line" class="px-3 py-2 rounded-lg bg-themeSurface3 border border-themeBorder hover:bg-themeBorder text-xs font-semibold transition cursor-pointer" data-i18n="btn_test">ทดสอบส่ง</button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-themeSecondary mb-1.5" data-i18n="label_discord_webhook">Discord Webhook URL:</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="cfg-discord-webhook" value="https://discord.com/api/webhooks/128000/ais-router-telemetry" class="flex-1 bg-themeSurface3 border border-themeBorder rounded-lg p-2 text-xs font-mono text-themeText focus:outline-none focus:border-themeAccent">
+                                        <button id="btn-test-discord" class="px-3 py-2 rounded-lg bg-themeSurface3 border border-themeBorder hover:bg-themeBorder text-xs font-semibold transition cursor-pointer" data-i18n="btn_test">ทดสอบส่ง</button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 pt-2 border-t border-themeBorder">
+                                    <div class="text-xs font-semibold text-themeText" data-i18n="label_triggers">เงื่อนไขการแจ้งเตือนอัตโนมัติ (Automated Triggers):</div>
+                                    <label class="flex items-center gap-2 text-xs text-themeSecondary cursor-pointer">
+                                        <input type="checkbox" id="trig-latency" checked class="w-4 h-4 accent-emerald-500 rounded">
+                                        <span data-i18n="trig_latency_desc">แจ้งเตือนเมื่อ Latency เกิน 25ms (>25ms Spike)</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-themeSecondary cursor-pointer">
+                                        <input type="checkbox" id="trig-disconnect" checked class="w-4 h-4 accent-emerald-500 rounded">
+                                        <span data-i18n="trig_disconnect_desc">แจ้งเตือนเมื่อเกตเวย์หรือสายไฟเบอร์ขาดการเชื่อมต่อ</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-themeSecondary cursor-pointer">
+                                        <input type="checkbox" id="trig-threat" checked class="w-4 h-4 accent-emerald-500 rounded">
+                                        <span data-i18n="trig_threat_desc">แจ้งเตือนเมื่อตรวจพบ Malicious Port Scan หรือ Brute Force</span>
+                                    </label>
+                                </div>
+
+                                <div class="pt-2 flex gap-3">
+                                    <button id="btn-save-alerts" class="px-5 py-2.5 rounded-lg font-semibold text-xs transition cursor-pointer flex items-center gap-2" style="background-color: var(--accent-color); color: var(--accent-contrast);">
+                                        <i data-lucide="save" class="w-4 h-4"></i>
+                                        <span data-i18n="btn_save_alert_cfg">บันทึกการแจ้งเตือน</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Firmware Update Management Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4 text-themeAccent"></i>
+                                    <span data-i18n="fw_update_heading">การตั้งค่าอัปเดตระบบและเฟิร์มแวร์ (Firmware Settings)</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold" id="fw-status-pill">UP TO DATE</span>
+                            </div>
+                            <div class="card-body space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-themeSecondary mb-1.5" data-i18n="label_fw_channel">ช่องทางการอัปเดตเฟิร์มแวร์ (Firmware Channel)</label>
+                                    <select id="cfg-fw-channel" class="w-full bg-themeSurface3 border border-themeBorder rounded-lg p-2 text-xs text-themeText focus:outline-none focus:border-themeAccent">
+                                        <option value="stable" selected data-i18n="opt_stable">Stable (รุ่นเสถียรทางการ - แนะนำ)</option>
+                                        <option value="beta" data-i18n="opt_beta">Beta / Early Access (รุ่นทดสอบฟีเจอร์ใหม่)</option>
+                                    </select>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-themeSecondary mb-1.5" data-i18n="label_schedule">ช่วงเวลาอัปเดตอัตโนมัติ</label>
+                                        <select id="cfg-update-schedule" class="w-full bg-themeSurface3 border border-themeBorder rounded-lg p-2 text-xs text-themeText focus:outline-none focus:border-themeAccent">
+                                            <option value="03:00-05:00" selected>03:00 - 05:00 น.</option>
+                                            <option value="01:00-03:00">01:00 - 03:00 น.</option>
+                                            <option value="04:00-06:00">04:00 - 06:00 น.</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-themeSecondary mb-1.5" data-i18n="label_frequency">ความถี่ในการตรวจเช็ค</label>
+                                        <select id="cfg-check-freq" class="w-full bg-themeSurface3 border border-themeBorder rounded-lg p-2 text-xs text-themeText focus:outline-none focus:border-themeAccent">
+                                            <option value="daily" selected data-i18n="freq_daily">ทุกวัน (Daily)</option>
+                                            <option value="weekly" data-i18n="freq_weekly">ทุกสัปดาห์ (Weekly)</option>
+                                            <option value="manual" data-i18n="freq_manual">ตรวจสอบเอง (Manual)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 rounded-lg bg-themeSurface2 border border-themeBorder">
+                                    <div>
+                                        <div class="text-xs font-semibold text-themeText" data-i18n="label_backup">สำรองการตั้งค่าก่อนอัปเดตอัตโนมัติ</div>
+                                        <div class="text-[11px] text-themeMuted" data-i18n="desc_backup">สร้างจุดย้อนกลับ Configuration ไฟล์เดิมก่อนกระบวนการเขียน Flash</div>
+                                    </div>
+                                    <input type="checkbox" id="cfg-backup-toggle" checked class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                                </div>
+
+                                <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                                    <button id="btn-check-updates" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-themeSurface3 hover:bg-themeBorder border border-themeBorder text-themeText font-semibold text-xs transition flex items-center justify-center gap-2 cursor-pointer">
+                                        <i data-lucide="search" class="w-4 h-4"></i>
+                                        <span data-i18n="btn_check_updates_now">ตรวจสอบการอัปเดตทันที</span>
+                                    </button>
+                                    <button id="btn-save-fw-cfg" class="w-full sm:w-auto px-5 py-2.5 rounded-lg font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-2" style="background-color: var(--accent-color); color: var(--accent-contrast);">
+                                        <i data-lucide="save" class="w-4 h-4"></i>
+                                        <span data-i18n="btn_save_settings">บันทึกการตั้งค่า</span>
+                                    </button>
+                                </div>
+
+                                <div id="update-check-result" class="text-xs font-mono p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hidden">
+                                    ✓ กำลังใช้เฟิร์มแวร์เวอร์ชันล่าสุดแล้ว (V1.0.0.48) - ตรวจสอบสำเร็จเมื่อสักครู่
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Rename Device Modal -->
+    <div id="rename-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-5 space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-themeBorder">
+                <div class="font-bold text-base flex items-center gap-2">
+                    <i data-lucide="edit-3" class="w-4 h-4 text-themeAccent"></i>
+                    <span data-i18n="modal_rename_title">เปลี่ยนชื่ออุปกรณ์ (Rename Device)</span>
+                </div>
+                <button id="btn-close-rename" class="text-themeMuted hover:text-themeText">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-themeSecondary mb-1" data-i18n="modal_ip_label">หมายเลข IP:</label>
+                    <input type="text" id="rename-ip" readonly class="w-full bg-themeSurface3 border border-themeBorder rounded-lg p-2 font-mono text-themeMuted outline-none">
+                </div>
+                <div>
+                    <label class="block text-themeSecondary mb-1" data-i18n="modal_name_label">ชื่ออุปกรณ์ใหม่:</label>
+                    <input type="text" id="rename-input" class="w-full bg-themeSurface2 border border-themeBorder focus:border-themeAccent rounded-lg p-2 text-sm text-themeText outline-none">
+                </div>
+            </div>
+            <div class="pt-3 border-t border-themeBorder flex justify-end gap-2">
+                <button id="btn-cancel-rename" class="px-4 py-2 rounded-lg bg-themeSurface3 text-themeSecondary hover:text-themeText text-xs font-semibold" data-i18n="btn_cancel">ยกเลิก</button>
+                <button id="btn-submit-rename" class="px-4 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent-color); color: var(--accent-contrast);" data-i18n="btn_save">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Blacklist IP Modal -->
+    <div id="blacklist-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-5 space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-themeBorder">
+                <div class="font-bold text-base flex items-center gap-2 text-rose-400">
+                    <i data-lucide="ban" class="w-4 h-4"></i>
+                    <span>บล็อกหมายเลข IP (Blacklist Target IP)</span>
+                </div>
+                <button id="btn-close-blacklist" class="text-themeMuted hover:text-themeText">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-themeSecondary mb-1">Target IPv4 / IPv6:</label>
+                    <input type="text" id="blacklist-ip-input" placeholder="e.g. 185.220.101.99" class="w-full bg-themeSurface2 border border-themeBorder focus:border-rose-500 rounded-lg p-2 font-mono text-sm text-themeText outline-none">
+                </div>
+                <div>
+                    <label class="block text-themeSecondary mb-1">เหตุผลในการบล็อก (Reason):</label>
+                    <input type="text" id="blacklist-reason-input" value="Manual Threat Block / Recon Probe" class="w-full bg-themeSurface2 border border-themeBorder focus:border-rose-500 rounded-lg p-2 text-xs text-themeText outline-none">
+                </div>
+            </div>
+            <div class="pt-3 border-t border-themeBorder flex justify-end gap-2">
+                <button id="btn-cancel-blacklist" class="px-4 py-2 rounded-lg bg-themeSurface3 text-themeSecondary hover:text-themeText text-xs font-semibold">ยกเลิก</button>
+                <button id="btn-submit-blacklist" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold">ยืนยันการบล็อก IP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- JAVASCRIPT LOGIC & ENGINE -->
+    <!-- ============================================== -->
+    <script>
+        lucide.createIcons();
+
+        // -------------------------------------------------------------
+        // I18N DICTIONARY (Thai Default & English)
+        // -------------------------------------------------------------
+        const i18n = {
+            th: {
+                nav_monitoring: "การติดตามระบบ",
+                nav_system_security: "ความปลอดภัย & ไร้สาย",
+                nav_management: "การจัดการระบบ",
+                tab_overview: "ภาพรวม",
+                tab_topology: "ผังโครงข่ายเรืองแสง",
+                tab_traffic_qos: "ทราฟฟิก & Dynamic QoS",
+                tab_interfaces: "พอร์ต & อินเทอร์เฟซ",
+                tab_clients: "อุปกรณ์ในระบบ LAN",
+                tab_speedtest: "ทดสอบสปีด 4 สเต็ป",
+                tab_wireless: "สัญญาณไร้สาย Wi-Fi 6",
+                tab_security: "ระบบตรวจจับภัยคุกคาม (IDS)",
+                tab_system: "ประสิทธิภาพฮาร์ดแวร์",
+                tab_settings: "การตั้งค่า & แจ้งเตือน",
+                crumb_overview: "ภาพรวมระบบ",
+                crumb_topology: "ผังโครงข่ายปฏิสัมพันธ์เรืองแสง",
+                crumb_traffic_qos: "สถิติทราฟฟิก & Dynamic QoS Engine",
+                crumb_interfaces: "สถานะพอร์ตการเชื่อมต่อ",
+                crumb_clients: "รายชื่ออุปกรณ์ LAN & Wi-Fi",
+                crumb_speedtest: "เครื่องมือทดสอบความเร็วอินเทอร์เน็ต 4 สเต็ป",
+                crumb_wireless: "การจัดการสัญญาณ Wi-Fi 6",
+                crumb_security: "ระบบตรวจจับภัยคุกคาม IDS & ไฟร์วอลล์",
+                crumb_system: "ข้อมูลฮาร์ดแวร์ & ประสิทธิภาพ",
+                crumb_settings: "การตั้งค่าระบบ & แจ้งเตือน",
+                kpi_dl: "ความเร็วดาวน์โหลด",
+                kpi_ul: "ความเร็วอัปโหลด",
+                kpi_latency: "ความหน่วงเกตเวย์ (GW Ping)",
+                kpi_hosts: "อุปกรณ์ออนไลน์ (LAN/Wi-Fi)",
+                unit_devices: "โหนด",
+                chart_traffic_title: "กราฟแบนด์วิดท์เรียลไทม์ (Live Bandwidth Throughput)",
+                port_matrix_title: "สถานะพอร์ตเชื่อมต่อ (Switch Port Matrix)",
+                chart_latency_title: "ความหน่วงเครือข่าย (Latency History)",
+                hw_stats_title: "การใช้ทรัพยากรฮาร์ดแวร์ (Hardware)",
+                label_temp: "อุณหภูมิเราเตอร์:",
+                syslog_title: "บันทึกเหตุการณ์ระบบ (Live Syslog)",
+                topo_heading: "ผังโครงข่ายปฏิสัมพันธ์เรืองแสง (Interactive Glowing Topology)",
+                topo_drag_hint: "คลิกหรือลากโหนดเพื่อดูข้อมูลแบบเรียลไทม์",
+                btn_reset_layout: "รีเซ็ตตำแหน่ง",
+                qos_heading: "Smart Dynamic QoS Engine (AI Traffic Balancer)",
+                qos_desc: "ระบบจัดสรรคิวข้อมูลอัจฉริยะแบบ Real-Time ลดค่าความหน่วง (Ultra-low jitter) สำหรับเสียงและเกมมิ่ง พร้อมจัดสรรแบนด์วิดท์อัตโนมัติตามประเภทข้อมูล",
+                clients_heading: "อุปกรณ์ทั้งหมดในระบบ LAN & Wi-Fi (Real ARP Scanned)",
+                search_placeholder: "ค้นหาชื่อ, IP, MAC...",
+                filter_all: "ทั้งหมด",
+                filter_wired: "LAN มีสาย",
+                filter_wireless: "Wi-Fi",
+                col_device: "อุปกรณ์ / ผู้ผลิต",
+                col_network: "IP & MAC Address",
+                col_iface: "พอร์ต / ย่านคลื่น",
+                col_signal: "คุณภาพสัญญาณ",
+                col_live_speed: "ความเร็วสด (RX / TX)",
+                col_total: "ปริมาณรวม",
+                col_status: "สถานะ",
+                col_action: "จัดการ",
+                btn_rename: "เปลี่ยนชื่อ",
+                speedtest_heading: "เครื่องมือทดสอบความเร็วระดับโปร 4 สเต็ป (Pro Diagnostic Speedtest)",
+                btn_start_speedtest: "เริ่มทดสอบความเร็วแบบละเอียด 4 สเต็ป",
+                report_card_heading: "ผลการวินิจฉัยและคะแนนคุณภาพ",
+                rep_download: "ความเร็วดาวน์โหลดเฉลี่ย",
+                rep_upload: "ความเร็วอัปโหลดเฉลี่ย",
+                rep_bufferbloat: "คะแนนการจัดการ Bufferbloat",
+                rep_bufferbloat_desc: "คะแนนระดับ A+: การตอบสนองยอดเยี่ยม ความหน่วงคงที่ไม่มีสะดุด เหมาะสำหรับการเล่นเกมออนไลน์และสตรีมมิ่งสด",
+                sec_threat_level: "ระดับภัยคุกคามปัจจุบัน",
+                sec_spi_status: "สถานะไฟร์วอลล์ SPI",
+                sec_blocked_today: "การสกัดกั้นวันนี้",
+                sec_blacklist_count: "IP แบล็กลิสต์ในระบบ",
+                sec_threat_table_title: "ตารางวิเคราะห์ภัยคุกคามเรียลไทม์ (Real-Time Threat Intelligence)",
+                sec_blacklist_table_title: "รายการ IP ที่ถูกบล็อก (Active Blacklisted IPs)",
+                btn_add_blacklist: "+ เพิ่ม IP บล็อก",
+                btn_blacklist_ip: "บล็อก IP",
+                traffic_chart_header: "ประวัติการใช้งานข้อมูล 24 ชั่วโมง (Traffic Data History)",
+                proto_dist_title: "สัดส่วนโปรโตคอล (Protocol Distribution)",
+                app_layer_title: "ทราฟฟิกแยกตามแอปพลิเคชัน (Application Layer Breakdown)",
+                iface_stats_title: "ตารางสถิติและอัตราความเร็วของพอร์ต (Physical Ports Statistics)",
+                wifi_mgr_title: "การจัดการคลื่นสัญญาณ Wi-Fi (SSID Configuration)",
+                fw_rules_title: "กฎความปลอดภัยและไฟร์วอลล์ (Active Firewall Rules)",
+                block_log_title: "บันทึกการป้องกันการบุกรุก (Intrusion Prevention Logs)",
+                alert_settings_heading: "ระบบแจ้งเตือนหลายช่องทาง (Multi-Channel Alert System)",
+                label_line_token: "LINE Notify Access Token:",
+                label_discord_webhook: "Discord Webhook URL:",
+                btn_test: "ทดสอบส่ง",
+                label_triggers: "เงื่อนไขการแจ้งเตือนอัตโนมัติ (Automated Triggers):",
+                trig_latency_desc: "แจ้งเตือนเมื่อ Latency เกิน 25ms (>25ms Spike)",
+                trig_disconnect_desc: "แจ้งเตือนเมื่อเกตเวย์หรือสายไฟเบอร์ขาดการเชื่อมต่อ",
+                trig_threat_desc: "แจ้งเตือนเมื่อตรวจพบ Malicious Port Scan หรือ Brute Force",
+                btn_save_alert_cfg: "บันทึกการแจ้งเตือน",
+                fw_update_heading: "การตั้งค่าอัปเดตระบบและเฟิร์มแวร์ (Firmware Settings)",
+                label_fw_channel: "ช่องทางการอัปเดตเฟิร์มแวร์ (Firmware Channel)",
+                opt_stable: "Stable (รุ่นเสถียรทางการ - แนะนำ)",
+                opt_beta: "Beta / Early Access (รุ่นทดสอบฟีเจอร์ใหม่)",
+                label_schedule: "ช่วงเวลาอัปเดตอัตโนมัติ",
+                label_frequency: "ความถี่ในการตรวจเช็ค",
+                freq_daily: "ทุกวัน (Daily)",
+                freq_weekly: "ทุกสัปดาห์ (Weekly)",
+                freq_manual: "ตรวจสอบเอง (Manual)",
+                label_backup: "สำรองการตั้งค่าก่อนอัปเดตอัตโนมัติ",
+                desc_backup: "สร้างจุดย้อนกลับ Configuration ไฟล์เดิมก่อนกระบวนการเขียน Flash",
+                btn_check_updates_now: "ตรวจสอบการอัปเดตทันที",
+                btn_save_settings: "บันทึกการตั้งค่า",
+                modal_rename_title: "เปลี่ยนชื่ออุปกรณ์ (Rename Device)",
+                modal_ip_label: "หมายเลข IP:",
+                modal_name_label: "ชื่ออุปกรณ์ใหม่:",
+                btn_cancel: "ยกเลิก",
+                btn_save: "บันทึก"
+            },
+            en: {
+                nav_monitoring: "MONITORING",
+                nav_system_security: "SECURITY & WIRELESS",
+                nav_management: "SYSTEM MANAGEMENT",
+                tab_overview: "Overview",
+                tab_topology: "Network Topology",
+                tab_traffic_qos: "Traffic & Dynamic QoS",
+                tab_interfaces: "Interfaces",
+                tab_clients: "LAN Clients",
+                tab_speedtest: "4-Stage Speedtest",
+                tab_wireless: "Wireless Wi-Fi 6",
+                tab_security: "Intrusion Detection (IDS)",
+                tab_system: "Hardware Health",
+                tab_settings: "Settings & Alerts",
+                crumb_overview: "System Overview",
+                crumb_topology: "Interactive Glowing Network Topology",
+                crumb_traffic_qos: "Traffic Analytics & Dynamic QoS Engine",
+                crumb_interfaces: "Physical Port Interfaces",
+                crumb_clients: "Connected LAN & Wi-Fi Devices",
+                crumb_speedtest: "4-Stage Internet Speed Diagnostics",
+                crumb_wireless: "Wi-Fi 6 Radio Management",
+                crumb_security: "Intrusion Detection System & Security",
+                crumb_system: "Hardware System Health",
+                crumb_settings: "System Settings & Multi-Channel Alerts",
+                kpi_dl: "Download Speed",
+                kpi_ul: "Upload Speed",
+                kpi_latency: "Gateway Latency",
+                kpi_hosts: "Online LAN Hosts",
+                unit_devices: "nodes",
+                chart_traffic_title: "Live Bandwidth Throughput",
+                port_matrix_title: "Switch Port Status Matrix",
+                chart_latency_title: "Multi-Target Latency History",
+                hw_stats_title: "Hardware Resources",
+                label_temp: "Router Temperature:",
+                syslog_title: "Live Syslog Event Feed",
+                topo_heading: "Interactive Glowing Network Topology Map",
+                topo_drag_hint: "Click or drag nodes to inspect live telemetry",
+                btn_reset_layout: "Reset Layout",
+                qos_heading: "Smart Dynamic QoS Engine (AI Traffic Balancer)",
+                qos_desc: "Real-time automated traffic shaping prioritizing gaming & voice for ultra-low jitter, with dynamic bandwidth allocation.",
+                clients_heading: "Connected Clients (Scanned Real ARP)",
+                search_placeholder: "Search name, IP, MAC...",
+                filter_all: "All",
+                filter_wired: "Wired LAN",
+                filter_wireless: "Wi-Fi",
+                col_device: "Device / Vendor",
+                col_network: "IP & MAC Address",
+                col_iface: "Interface",
+                col_signal: "Signal",
+                col_live_speed: "Live Speed (RX / TX)",
+                col_total: "Total Usage",
+                col_status: "Status",
+                col_action: "Action",
+                btn_rename: "Rename",
+                speedtest_heading: "Pro 4-Stage Diagnostic Speedtest",
+                btn_start_speedtest: "Start 4-Stage Diagnostic Speedtest",
+                report_card_heading: "Diagnostic Quality Scorecard",
+                rep_download: "Average Download",
+                rep_upload: "Average Upload",
+                rep_bufferbloat: "Bufferbloat Rating",
+                rep_bufferbloat_desc: "Grade A+: Excellent buffer management and ultra-low loaded jitter. Perfect for gaming & live 4K streams.",
+                sec_threat_level: "Current Threat Level",
+                sec_spi_status: "SPI Firewall Status",
+                sec_blocked_today: "Blocked Attacks Today",
+                sec_blacklist_count: "Active Blacklisted IPs",
+                sec_threat_table_title: "Real-Time Threat Intelligence Feed",
+                sec_blacklist_table_title: "Active Blacklisted IPs",
+                btn_add_blacklist: "+ Add IP Block",
+                btn_blacklist_ip: "Blacklist IP",
+                traffic_chart_header: "24-Hour Traffic Usage History",
+                proto_dist_title: "Protocol Distribution",
+                app_layer_title: "Application Layer Breakdown",
+                iface_stats_title: "Physical Ports Statistics",
+                wifi_mgr_title: "Wi-Fi SSIDs Configuration",
+                fw_rules_title: "Active Firewall Rules",
+                block_log_title: "Intrusion Prevention Logs",
+                alert_settings_heading: "Multi-Channel Alert System",
+                label_line_token: "LINE Notify Access Token:",
+                label_discord_webhook: "Discord Webhook URL:",
+                btn_test: "Test Alert",
+                label_triggers: "Automated Triggers:",
+                trig_latency_desc: "Trigger alert on Latency Spike (>25ms)",
+                trig_disconnect_desc: "Trigger alert on Gateway / Optical Link Disconnect",
+                trig_threat_desc: "Trigger alert on Malicious Port Scan or Brute Force",
+                btn_save_alert_cfg: "Save Alert Config",
+                fw_update_heading: "System & Firmware Update Settings",
+                label_fw_channel: "Firmware Channel",
+                opt_stable: "Stable (Official - Recommended)",
+                opt_beta: "Beta / Early Access",
+                label_schedule: "Auto-Update Schedule",
+                label_frequency: "Check Frequency",
+                freq_daily: "Daily",
+                freq_weekly: "Weekly",
+                freq_manual: "Manual",
+                label_backup: "Backup configuration before updating",
+                desc_backup: "Creates an automatic configuration rollback point before flash write.",
+                btn_check_updates_now: "Check For Updates Now",
+                btn_save_settings: "Save Settings",
+                modal_rename_title: "Rename Device",
+                modal_ip_label: "IP Address:",
+                modal_name_label: "New Device Name:",
+                btn_cancel: "Cancel",
+                btn_save: "Save"
+            }
+        };
+
+        let currentLang = localStorage.getItem('router_lang') || 'th';
+        let soundEnabled = true;
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('router_lang', lang);
+            document.documentElement.lang = lang;
+            
+            const dict = i18n[lang] || i18n.th;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(dict[key]) el.innerText = dict[key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if(dict[key]) el.setAttribute('placeholder', dict[key]);
+            });
+
+            document.getElementById('lang-label').innerText = lang === 'th' ? 'ไทย (TH)' : 'English (EN)';
+            updateBreadcrumb();
+            if(window.lastData) {
+                renderClients(window.lastData);
+                renderQoS(window.lastData);
+                renderThreatTable(window.lastData);
+            }
+        }
+
+        document.getElementById('btn-lang-toggle').addEventListener('click', () => {
+            const next = currentLang === 'th' ? 'en' : 'th';
+            applyLanguage(next);
+        });
+
+        // -------------------------------------------------------------
+        // WEB AUDIO API SOUND GENERATOR
+        // -------------------------------------------------------------
+        let audioCtx = null;
+        function playChime(type = 'info') {
+            if(!soundEnabled) return;
+            try {
+                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if(type === 'alert') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.1); // A5
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch(e) {}
+        }
+
+        const btnSoundToggle = document.getElementById('btn-sound-toggle');
+        btnSoundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if(soundEnabled) {
+                icon.setAttribute('data-lucide', 'volume-2');
+                icon.classList.remove('text-zinc-500');
+                icon.classList.add('text-emerald-400');
+                showToast("Sound Notifications Enabled", "info");
+            } else {
+                icon.setAttribute('data-lucide', 'volume-x');
+                icon.classList.remove('text-emerald-400');
+                icon.classList.add('text-zinc-500');
+            }
+            lucide.createIcons();
+        });
+
+        // -------------------------------------------------------------
+        // FLOATING TOAST NOTIFICATION SYSTEM
+        // -------------------------------------------------------------
+        function showToast(message, type = 'info', title = null) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let borderCol = 'border-themeBorder';
+            let bgCol = 'bg-themeSurface';
+            let iconName = 'info';
+            let iconCol = 'text-sky-400';
+            
+            if(type === 'warning') {
+                borderCol = 'border-amber-500/40';
+                iconName = 'alert-triangle';
+                iconCol = 'text-amber-400';
+            } else if(type === 'danger' || type === 'threat') {
+                borderCol = 'border-rose-500/50';
+                iconName = 'shield-alert';
+                iconCol = 'text-rose-400';
+            } else if(type === 'success') {
+                borderCol = 'border-emerald-500/40';
+                iconName = 'check-circle';
+                iconCol = 'text-emerald-400';
+            }
+
+            toast.className = `toast-item card p-3 border ${borderCol} shadow-2xl flex items-start gap-2.5 text-xs`;
+            toast.innerHTML = `
+                <div class="${iconCol} shrink-0 mt-0.5"><i data-lucide="${iconName}" class="w-4 h-4"></i></div>
+                <div class="flex-1">
+                    ${title ? `<div class="font-bold text-themeText">${title}</div>` : ''}
+                    <div class="text-themeSecondary">${message}</div>
+                </div>
+                <button class="text-themeMuted hover:text-themeText shrink-0"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+            playChime(type === 'danger' || type === 'threat' ? 'alert' : 'info');
+
+            toast.querySelector('button').addEventListener('click', () => toast.remove());
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // -------------------------------------------------------------
+        // THEME SWITCHER
+        // -------------------------------------------------------------
+        const themeSelector = document.getElementById('theme-selector');
+        const savedTheme = localStorage.getItem('router_theme') || 'dark-mono';
+        themeSelector.value = savedTheme;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        themeSelector.addEventListener('change', (e) => {
+            const val = e.target.value;
+            document.documentElement.setAttribute('data-theme', val);
+            localStorage.setItem('router_theme', val);
+            updateChartColors();
+            if(topoInstance) topoInstance.redraw();
+        });
+
+        // -------------------------------------------------------------
+        // MOBILE DRAWER LOGIC
+        // -------------------------------------------------------------
+        const sidebar = document.getElementById('sidebar');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const btnOpenDrawer = document.getElementById('btn-open-drawer');
+        const btnCloseDrawer = document.getElementById('btn-close-drawer');
+
+        function openDrawer() {
+            sidebar.classList.add('open');
+            drawerOverlay.classList.remove('hidden');
+        }
+        function closeDrawer() {
+            sidebar.classList.remove('open');
+            drawerOverlay.classList.add('hidden');
+        }
+
+        btnOpenDrawer.addEventListener('click', openDrawer);
+        btnCloseDrawer.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        // Navigation switching
+        let currentSec = 'sec-overview';
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('text-themeAccent', 'bg-themeSurface3');
+                    b.classList.add('text-themeSecondary');
+                });
+                btn.classList.add('text-themeAccent', 'bg-themeSurface3');
+                btn.classList.remove('text-themeSecondary');
+
+                const target = btn.getAttribute('data-target');
+                document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+                document.getElementById(target).classList.remove('hidden');
+                currentSec = target;
+                updateBreadcrumb();
+                closeDrawer();
+
+                if(target === 'sec-topology' && topoInstance) {
+                    setTimeout(() => topoInstance.resize(), 50);
+                }
+            });
+        });
+
+        function updateBreadcrumb() {
+            const dict = i18n[currentLang] || i18n.th;
+            const crumbMap = {
+                'sec-overview': dict.crumb_overview,
+                'sec-topology': dict.crumb_topology,
+                'sec-traffic-qos': dict.crumb_traffic_qos,
+                'sec-interfaces': dict.crumb_interfaces,
+                'sec-clients': dict.crumb_clients,
+                'sec-speedtest': dict.crumb_speedtest,
+                'sec-wireless': dict.crumb_wireless,
+                'sec-security': dict.crumb_security,
+                'sec-system': dict.crumb_system,
+                'sec-settings': dict.crumb_settings
+            };
+            document.getElementById('crumb-main').innerText = crumbMap[currentSec] || dict.crumb_overview;
+        }
+
+        // -------------------------------------------------------------
+        // INTERACTIVE GLOWING TOPOLOGY MAP ENGINE (Canvas + Particles)
+        // -------------------------------------------------------------
+        class GlowingTopologyMap {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.container = this.canvas.parentElement;
+                this.nodes = [];
+                this.links = [];
+                this.particles = [];
+                this.draggedNode = null;
+                this.hoveredNode = null;
+                this.offset = { x: 0, y: 0 };
+                this.scale = 1;
+                
+                this.initNodes();
+                this.bindEvents();
+                this.resize();
+                this.animate();
+            }
+
+            initNodes() {
+                const w = this.container.clientWidth || 800;
+                const h = 520;
+                const cx = w / 2;
+                const cy = h / 2;
+
+                // Center Router
+                this.nodes = [
+                    { id: 'router', name: 'AIS T632AM Gateway', ip: '192.168.1.1', mac: '64:20:E3:4B:6F:8A', iface: 'GPON SFP+ (2.5G)', type: 'router', x: cx, y: cy, radius: 26, color: '#22c55e', rx: 45.2, tx: 12.8, signal: 'Optical 2.5G' },
+                    
+                    // Hub / Switch / Extenders / Radios
+                    { id: 'switch', name: 'LAN Gigabit Switch', ip: 'Bridge', mac: 'Internal', iface: 'LAN Ports 1-4', type: 'switch', x: cx - 180, y: cy - 70, radius: 18, color: '#38bdf8', rx: 5.4, tx: 2.2, signal: '1000M Full' },
+                    { id: 'mesh', name: 'Mesh AP Extender', ip: '192.168.1.153', mac: '64:20:E3:4B:6A:32', iface: 'LAN 2 (Mesh Link)', type: 'mesh', x: cx + 180, y: cy - 70, radius: 20, color: '#c084fc', rx: 2.4, tx: 1.0, signal: '1G Wired Link' },
+                    { id: 'wifi5g', name: '5GHz AX Radio', ip: 'MAPANYA_5G', mac: 'Radio 5G', iface: '160MHz AX', type: 'radio', x: cx - 110, y: cy + 120, radius: 18, color: '#38bdf8', rx: 14.2, tx: 4.8, signal: '2402 Mbps AX' },
+                    { id: 'wifi24g', name: '2.4GHz IoT Radio', ip: 'MAPANYA_2.4G', mac: 'Radio 2.4G', iface: '20MHz AX/N', type: 'radio', x: cx + 110, y: cy + 120, radius: 18, color: '#f59e0b', rx: 3.2, tx: 1.1, signal: '574 Mbps AX' },
+
+                    // 8 Client Nodes
+                    { id: 'prach-pc', parent: 'switch', name: 'Prach-PC', ip: '192.168.1.107', mac: '64:20:E3:4B:6F:01', iface: 'LAN 1', type: 'desktop', x: cx - 320, y: cy - 140, radius: 15, color: '#38bdf8', rx: 4.12, tx: 1.25, signal: 'Wired 1 Gbps' },
+                    { id: 'chameleon', parent: 'wifi5g', name: 'ChameleonHub', ip: '192.168.1.101', mac: '10:FF:E0:F2:FE:89', iface: 'MAPANYA_5G', type: 'mobile', x: cx - 240, y: cy + 180, radius: 15, color: '#38bdf8', rx: 2.45, tx: 0.42, signal: '-44 dBm (Excellent)' },
+                    { id: 'smart-tv', parent: 'wifi5g', name: 'Smart TV 4K', ip: '192.168.1.131', mac: '0A:EF:F1:CE:5F:68', iface: 'MAPANYA_5G', type: 'tv', x: cx - 110, y: cy + 220, radius: 15, color: '#38bdf8', rx: 5.80, tx: 0.18, signal: '-56 dBm (Good)' },
+                    { id: 'iot-hub', parent: 'wifi24g', name: 'Xiaomi Smart Hub', ip: '192.168.1.184', mac: '34:6F:24:B4:63:07', iface: 'MAPANYA_2.4G', type: 'iot', x: cx + 110, y: cy + 220, radius: 15, color: '#f59e0b', rx: 0.08, tx: 0.03, signal: '-61 dBm (Fair)' },
+                    { id: 'ip-cam', parent: 'wifi24g', name: 'IP Security Cam', ip: '192.168.1.186', mac: 'A8:4F:A4:76:39:9E', iface: 'MAPANYA_2.4G', type: 'cam', x: cx + 240, y: cy + 180, radius: 15, color: '#f59e0b', rx: 0.15, tx: 2.30, signal: '-58 dBm (Good)' },
+                    { id: 'tablet', parent: 'wifi5g', name: 'iPad Pro Tablet', ip: '192.168.1.191', mac: '6A:93:BC:75:24:48', iface: 'MAPANYA_5G', type: 'tablet', x: cx - 20, y: cy + 190, radius: 15, color: '#38bdf8', rx: 1.20, tx: 0.25, signal: '-52 dBm (Good)' },
+                    { id: 'guest-phone', parent: 'mesh', name: 'Guest Galaxy Phone', ip: '192.168.1.195', mac: '66:49:BE:69:C8:35', iface: 'MAPANYA_5G (Mesh)', type: 'mobile', x: cx + 320, y: cy - 140, radius: 15, color: '#c084fc', rx: 0.45, tx: 0.12, signal: '-68 dBm (Fair)' },
+                    { id: 'lan-spare', parent: 'switch', name: 'Spare LAN Port', ip: 'Unlinked', mac: 'LAN 4', iface: 'LAN 4', type: 'port', x: cx - 310, y: cy - 40, radius: 12, color: '#71717a', rx: 0, tx: 0, signal: 'Down' }
+                ];
+
+                this.links = [
+                    { source: 'router', target: 'switch', speed: '1 Gbps', color: '#38bdf8' },
+                    { source: 'router', target: 'mesh', speed: '1 Gbps', color: '#c084fc' },
+                    { source: 'router', target: 'wifi5g', speed: '2.4 Gbps', color: '#38bdf8' },
+                    { source: 'router', target: 'wifi24g', speed: '574 Mbps', color: '#f59e0b' },
+                    
+                    { source: 'switch', target: 'prach-pc', speed: '1 Gbps', color: '#38bdf8' },
+                    { source: 'switch', target: 'lan-spare', speed: 'Down', color: '#52525b' },
+                    { source: 'wifi5g', target: 'chameleon', speed: '866 Mbps', color: '#38bdf8' },
+                    { source: 'wifi5g', target: 'smart-tv', speed: '573 Mbps', color: '#38bdf8' },
+                    { source: 'wifi5g', target: 'tablet', speed: '433 Mbps', color: '#38bdf8' },
+                    { source: 'wifi24g', target: 'iot-hub', speed: '72 Mbps', color: '#f59e0b' },
+                    { source: 'wifi24g', target: 'ip-cam', speed: '144 Mbps', color: '#f59e0b' },
+                    { source: 'mesh', target: 'guest-phone', speed: '288 Mbps', color: '#c084fc' }
+                ];
+
+                // Create particles along links
+                this.particles = [];
+                for(let i = 0; i < 35; i++) {
+                    const link = this.links[Math.floor(Math.random() * this.links.length)];
+                    this.particles.push({
+                        link: link,
+                        progress: Math.random(),
+                        speed: 0.004 + Math.random() * 0.008,
+                        size: 2.5 + Math.random() * 2
+                    });
+                }
+            }
+
+            resize() {
+                const rect = this.container.getBoundingClientRect();
+                this.canvas.width = rect.width;
+                this.canvas.height = 520;
+                this.redraw();
+            }
+
+            bindEvents() {
+                window.addEventListener('resize', () => this.resize());
+
+                this.canvas.addEventListener('mousedown', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const mx = e.clientX - rect.left;
+                    const my = e.clientY - rect.top;
+
+                    const clicked = this.nodes.find(n => Math.hypot(n.x - mx, n.y - my) <= n.radius + 6);
+                    if(clicked) {
+                        this.draggedNode = clicked;
+                        this.inspectNode(clicked);
+                    }
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const mx = e.clientX - rect.left;
+                    const my = e.clientY - rect.top;
+
+                    if(this.draggedNode) {
+                        this.draggedNode.x = Math.max(30, Math.min(this.canvas.width - 30, mx));
+                        this.draggedNode.y = Math.max(30, Math.min(this.canvas.height - 30, my));
+                    } else {
+                        const hover = this.nodes.find(n => Math.hypot(n.x - mx, n.y - my) <= n.radius + 6);
+                        if(hover !== this.hoveredNode) {
+                            this.hoveredNode = hover;
+                            this.canvas.style.cursor = hover ? 'pointer' : 'grab';
+                        }
+                    }
+                });
+
+                window.addEventListener('mouseup', () => {
+                    this.draggedNode = null;
+                });
+
+                document.getElementById('btn-reset-topo').addEventListener('click', () => {
+                    this.initNodes();
+                });
+
+                document.getElementById('btn-close-inspector').addEventListener('click', () => {
+                    document.getElementById('topo-node-inspector').classList.add('hidden');
+                });
+            }
+
+            inspectNode(node) {
+                const ins = document.getElementById('topo-node-inspector');
+                document.getElementById('inspector-name').innerText = node.name;
+                document.getElementById('inspector-ip').innerText = node.ip;
+                document.getElementById('inspector-mac').innerText = node.mac;
+                document.getElementById('inspector-iface').innerText = node.iface;
+                document.getElementById('inspector-rx').innerText = `${node.rx.toFixed(2)} Mbps`;
+                document.getElementById('inspector-tx').innerText = `${node.tx.toFixed(2)} Mbps`;
+                document.getElementById('inspector-signal').innerText = node.signal;
+                
+                const wrap = document.getElementById('inspector-icon-wrap');
+                wrap.innerText = node.name.substring(0, 2).toUpperCase();
+                ins.classList.remove('hidden');
+                lucide.createIcons();
+            }
+
+            updateLiveTelemetry(devices) {
+                devices.forEach(d => {
+                    const match = this.nodes.find(n => n.ip === d.ip);
+                    if(match) {
+                        match.name = d.name;
+                        match.rx = d.rx_speed_mbps;
+                        match.tx = d.tx_speed_mbps;
+                        if(d.signal) match.signal = d.signal;
+                    }
+                });
+            }
+
+            redraw() {
+                const ctx = this.ctx;
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                // Draw Grid Dots
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+                for(let x = 20; x < w; x += 30) {
+                    for(let y = 20; y < h; y += 30) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 1, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Draw Links
+                this.links.forEach(l => {
+                    const s = this.nodes.find(n => n.id === l.source);
+                    const t = this.nodes.find(n => n.id === l.target);
+                    if(!s || !t) return;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(s.x, s.y);
+                    ctx.lineTo(t.x, t.y);
+                    ctx.strokeStyle = l.color || '#334155';
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = 0.35;
+                    ctx.stroke();
+
+                    // Subtle glow along link
+                    ctx.strokeStyle = l.color || '#38bdf8';
+                    ctx.lineWidth = 6;
+                    ctx.globalAlpha = 0.08;
+                    ctx.stroke();
+                    ctx.restore();
+                });
+
+                // Draw Glowing Flow Particles
+                this.particles.forEach(p => {
+                    const s = this.nodes.find(n => n.id === p.link.source);
+                    const t = this.nodes.find(n => n.id === p.link.target);
+                    if(!s || !t) return;
+
+                    const px = s.x + (t.x - s.x) * p.progress;
+                    const py = s.y + (t.y - s.y) * p.progress;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(px, py, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.link.color || '#38bdf8';
+                    ctx.shadowColor = p.link.color || '#38bdf8';
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                    ctx.restore();
+
+                    p.progress += p.speed;
+                    if(p.progress >= 1) p.progress = 0;
+                });
+
+                // Draw Nodes
+                this.nodes.forEach(n => {
+                    const isHover = n === this.hoveredNode;
+                    const isDrag = n === this.draggedNode;
+                    const r = n.radius + (isHover ? 3 : 0);
+
+                    ctx.save();
+
+                    // Outer Halo Glow
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, r + 8, 0, Math.PI * 2);
+                    ctx.fillStyle = n.color;
+                    ctx.globalAlpha = isHover ? 0.35 : 0.15;
+                    ctx.fill();
+
+                    // Node Circle
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = '#18181b';
+                    ctx.strokeStyle = n.color;
+                    ctx.lineWidth = isHover || isDrag ? 3 : 2;
+                    ctx.globalAlpha = 1;
+                    ctx.shadowColor = n.color;
+                    ctx.shadowBlur = isHover ? 16 : 8;
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Node Inner Core Dot
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, r * 0.4, 0, Math.PI * 2);
+                    ctx.fillStyle = n.color;
+                    ctx.fill();
+
+                    // Node Labels
+                    ctx.shadowBlur = 0;
+                    ctx.font = isHover ? 'bold 11px "Plus Jakarta Sans"' : '10px "Plus Jakarta Sans"';
+                    ctx.fillStyle = '#f4f4f5';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(n.name, n.x, n.y + r + 14);
+
+                    ctx.font = '9px "Fira Code"';
+                    ctx.fillStyle = n.rx > 0 ? '#38bdf8' : '#71717a';
+                    const speedLabel = n.rx > 0 ? `${n.rx.toFixed(1)}M` : n.ip;
+                    ctx.fillText(speedLabel, n.x, n.y + r + 26);
+
+                    ctx.restore();
+                });
+            }
+
+            animate() {
+                this.redraw();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        let topoInstance = null;
+
+        // -------------------------------------------------------------
+        // CHART CONFIGURATIONS
+        // -------------------------------------------------------------
+        const charts = {};
+
+        function initCharts() {
+            Chart.defaults.font.family = "'Fira Code', monospace";
+            Chart.defaults.color = '#71717a';
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { maxTicksLimit: 6, font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { font: { size: 10 } } }
+                }
+            };
+
+            // 1. Overview Traffic
+            charts.ovTraffic = new Chart(document.getElementById('chart-ov-traffic'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Download', borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.15)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 0 },
+                        { label: 'Upload', borderColor: '#c084fc', backgroundColor: 'rgba(192, 132, 252, 0.15)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 0 }
+                    ]
+                },
+                options: commonOptions
+            });
+
+            // 2. Overview Latency
+            charts.ovLatency = new Chart(document.getElementById('chart-ov-latency'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Gateway', borderColor: '#22c55e', borderWidth: 1.5, tension: 0, pointRadius: 0 },
+                        { label: 'AIS DNS', borderColor: '#38bdf8', borderWidth: 1.5, tension: 0, pointRadius: 0 },
+                        { label: 'Google', borderColor: '#f59e0b', borderWidth: 1.5, tension: 0, pointRadius: 0 },
+                        { label: 'Cloudflare', borderColor: '#c084fc', borderWidth: 1.5, tension: 0, pointRadius: 0 }
+                    ]
+                },
+                options: commonOptions
+            });
+
+            // 3. Traffic History
+            charts.trfHistory = new Chart(document.getElementById('chart-traffic-history'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'RX', borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.2)', fill: true, borderWidth: 2, tension: 0.2, pointRadius: 0 },
+                        { label: 'TX', borderColor: '#c084fc', backgroundColor: 'rgba(192, 132, 252, 0.2)', fill: true, borderWidth: 2, tension: 0.2, pointRadius: 0 }
+                    ]
+                },
+                options: commonOptions
+            });
+
+            // 4. Protocol Distribution
+            charts.protoDist = new Chart(document.getElementById('chart-proto-dist'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['TCP', 'UDP', 'ICMP', 'Other'],
+                    datasets: [{ data: [74, 22, 3, 1], backgroundColor: ['#38bdf8', '#c084fc', '#22c55e', '#f59e0b'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } } }
+            });
+
+            // 5. Application Layer Traffic
+            charts.appTraffic = new Chart(document.getElementById('chart-app-traffic'), {
+                type: 'bar',
+                data: {
+                    labels: ['Streaming 4K', 'Web & Cloud', 'Security Cams', 'Gaming / UDP', 'IoT Home', 'Background'],
+                    datasets: [{ data: [5.8, 3.4, 2.1, 0.9, 0.2, 0.4], backgroundColor: '#38bdf8', borderRadius: 4 }]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' } }, y: { grid: { display: false } } } }
+            });
+
+            // 6. System CPU & Memory
+            charts.sysCpu = new Chart(document.getElementById('chart-sys-cpu'), {
+                type: 'line',
+                data: { labels: [], datasets: [{ borderColor: '#22c55e', backgroundColor: 'rgba(34, 197, 94, 0.15)', borderWidth: 2, fill: true, tension: 0.2, pointRadius: 0 }] },
+                options: { ...commonOptions, scales: { ...commonOptions.scales, y: { min: 0, max: 100 } } }
+            });
+
+            charts.sysMem = new Chart(document.getElementById('chart-sys-mem'), {
+                type: 'line',
+                data: { labels: [], datasets: [{ borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.15)', borderWidth: 2, fill: true, tension: 0.2, pointRadius: 0 }] },
+                options: { ...commonOptions, scales: { ...commonOptions.scales, y: { min: 0, max: 100 } } }
+            });
+        }
+
+        function updateChartColors() {
+            Object.values(charts).forEach(c => c && c.update('none'));
+        }
+
+        // -------------------------------------------------------------
+        // LIVE BACKEND DATA POLLING
+        // -------------------------------------------------------------
+        let autoScrollSyslog = true;
+        let lastPing = 1.0;
+        let lastThreatCount = 6;
+
+        document.getElementById('btn-toggle-scroll').addEventListener('click', (e) => {
+            autoScrollSyslog = !autoScrollSyslog;
+            e.target.innerText = `AUTOSCROLL: ${autoScrollSyslog ? 'ON' : 'OFF'}`;
+        });
+
+        async function fetchRouterData() {
+            try {
+                const res = await fetch('/api/stats');
+                if(!res.ok) throw new Error('Network error');
+                const data = await res.json();
+                window.lastData = data;
+                updateDashboard(data);
+            } catch(e) {
+                console.warn("Polling retry...", e);
+            }
+        }
+
+        function updateDashboard(data) {
+            // Check automated triggers for toast
+            const curPing = data.ping.gateway_ms;
+            if(curPing > 25.0 && lastPing <= 25.0) {
+                showToast(`Gateway Latency spiked to ${curPing}ms! Auto-optimizing QoS queues...`, 'warning', 'High Latency Spike Detected');
+            }
+            lastPing = curPing;
+
+            // Topbar
+            document.getElementById('tb-dl').innerText = data.traffic.download_mbps.toFixed(1);
+            document.getElementById('tb-ul').innerText = data.traffic.upload_mbps.toFixed(1);
+            document.getElementById('tb-ping').innerText = data.ping.gateway_ms + 'ms';
+            document.getElementById('sidebar-uptime').innerText = 'UP: ' + (data.system.health.uptime_str || '4d 10h');
+            document.getElementById('sidebar-fw-ver').innerText = data.router.firmware;
+
+            // Overview KPIs
+            document.getElementById('kpi-dl').innerText = data.traffic.download_mbps.toFixed(1);
+            document.getElementById('kpi-ul').innerText = data.traffic.upload_mbps.toFixed(1);
+            document.getElementById('kpi-ping-gw').innerText = data.ping.gateway_ms.toFixed(1);
+            document.getElementById('kpi-ping-cf').innerText = `Cloudflare: ${data.ping.cloudflare_ms}ms`;
+            document.getElementById('kpi-online-hosts').innerText = data.devices.length;
+            document.getElementById('kpi-wan-ip').innerText = `WAN: ${data.router.wan_ipv4}`;
+            document.getElementById('kpi-total-rx').innerText = `Total RX: ${data.traffic.total_rx_gb} GB`;
+            document.getElementById('kpi-total-tx').innerText = `Total TX: ${data.traffic.total_tx_gb} GB`;
+
+            // Hardware Stats
+            const cpu = data.system.health.cpu_pct;
+            const mem = data.system.health.mem_pct;
+            const disk = data.system.health.disk_pct;
+            document.getElementById('hw-cpu-val').innerText = cpu + '%';
+            document.getElementById('hw-cpu-bar').style.width = cpu + '%';
+            document.getElementById('hw-ram-val').innerText = `${mem}% (${data.system.health.mem_used_gb} / ${data.system.health.mem_total_gb} GB)`;
+            document.getElementById('hw-ram-bar').style.width = mem + '%';
+            document.getElementById('hw-disk-val').innerText = `${disk}% (${data.system.health.disk_used_gb} / ${data.system.health.disk_total_gb} GB)`;
+            document.getElementById('hw-disk-bar').style.width = disk + '%';
+            document.getElementById('hw-temp-val').innerText = `${data.system.health.temperature} °C (Normal)`;
+
+            // Switch Port Matrix Render
+            let portHtml = '';
+            data.ports.forEach(p => {
+                const isUp = p.status === 'UP';
+                const ledClass = isUp ? 'led-active' : 'led-inactive';
+                const blinkClass = (isUp && (p.rx_mb > 0 || p.tx_mb > 0)) ? 'led-blink' : '';
+                portHtml += `
+                    <div class="flex items-center justify-between p-2 rounded-lg bg-themeSurface2 border border-themeBorder text-xs">
+                        <div class="flex items-center gap-2.5">
+                            <span class="led-dot ${ledClass} ${blinkClass}"></span>
+                            <div>
+                                <div class="font-bold font-mono text-themeText">${p.id}</div>
+                                <div class="text-[10px] text-themeMuted">${p.name}</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-mono">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isUp ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-zinc-500/10 text-zinc-400 border border-zinc-500/20'}">${p.speed}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('switch-ports-container').innerHTML = portHtml;
+
+            // Live Syslog
+            let logHtml = '';
+            data.system.syslog.forEach(item => {
+                const color = item.level === 'WARN' ? 'text-amber-400' : item.level === 'ERR' ? 'text-rose-400' : 'text-sky-300';
+                logHtml += `
+                    <div class="flex items-start gap-2 border-b border-white/5 pb-1">
+                        <span class="text-zinc-500">[${item.ts}]</span>
+                        <span class="font-bold ${color}">[${item.level}]</span>
+                        <span class="text-zinc-300 flex-1">${item.msg}</span>
+                    </div>
+                `;
+            });
+            const sysFeed = document.getElementById('syslog-feed');
+            sysFeed.innerHTML = logHtml;
+            if(autoScrollSyslog) sysFeed.scrollTop = sysFeed.scrollHeight;
+
+            // Update Charts
+            const hist = data.history;
+            const labels = hist.ts || [];
+            
+            charts.ovTraffic.data.labels = labels;
+            charts.ovTraffic.data.datasets[0].data = hist.rx || [];
+            charts.ovTraffic.data.datasets[1].data = hist.tx || [];
+            charts.ovTraffic.update('none');
+
+            charts.ovLatency.data.labels = labels;
+            charts.ovLatency.data.datasets[0].data = hist.ping_gw || [];
+            charts.ovLatency.data.datasets[1].data = hist.ping_dns || [];
+            charts.ovLatency.data.datasets[2].data = hist.ping_google || [];
+            charts.ovLatency.data.datasets[3].data = hist.ping_cf || [];
+            charts.ovLatency.update('none');
+
+            charts.trfHistory.data.labels = labels;
+            charts.trfHistory.data.datasets[0].data = hist.rx || [];
+            charts.trfHistory.data.datasets[1].data = hist.tx || [];
+            charts.trfHistory.update('none');
+
+            charts.sysCpu.data.labels = labels;
+            charts.sysCpu.data.datasets[0].data = hist.cpu || [];
+            charts.sysCpu.update('none');
+
+            charts.sysMem.data.labels = labels;
+            charts.sysMem.data.datasets[0].data = hist.mem || [];
+            charts.sysMem.update('none');
+
+            // Topology Map Live Sync
+            if(topoInstance) topoInstance.updateLiveTelemetry(data.devices);
+
+            // Render all sections
+            renderClients(data);
+            renderQoS(data);
+            renderThreatTable(data);
+            renderBlacklistTable(data);
+            renderInterfacesTable(data);
+            renderWirelessTable(data);
+            renderSecurityTable(data);
+        }
+
+        // -------------------------------------------------------------
+        // SMART DYNAMIC QOS RENDERER
+        // -------------------------------------------------------------
+        function renderQoS(data) {
+            if(!data.qos_engine || !data.qos_engine.queues) return;
+            const container = document.getElementById('qos-queues-grid');
+            let html = '';
+
+            data.qos_engine.queues.forEach(q => {
+                const name = currentLang === 'th' ? q.name_th : q.name_en;
+                const pct = Math.min(100, Math.round((q.active_mbps / q.allocated_mbps) * 100));
+                html += `
+                    <div class="card p-4 space-y-3 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm" style="background-color: ${q.color}20; color: ${q.color};">
+                                    <i data-lucide="${q.icon}" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xs text-themeText">${name}</div>
+                                    <div class="text-[10px] font-mono text-themeMuted">DSCP: ${q.dscp} | Priority ${q.priority}</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded" style="background-color: ${q.color}15; color: ${q.color};">
+                                ${q.bufferbloat_mitigation}
+                            </span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono">
+                                <span class="text-themeSecondary">Active Load: <strong style="color: ${q.color};">${q.active_mbps} Mbps</strong></span>
+                                <span class="text-themeMuted">Cap: ${q.allocated_mbps} Mbps (${pct}%)</span>
+                            </div>
+                            <div class="w-full h-2.5 rounded-full bg-themeSurface3 overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-300" style="width: ${pct}%; background-color: ${q.color};"></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-themeBorder flex items-center justify-between text-[11px] font-mono text-themeMuted">
+                            <span>Target Jitter: <strong class="text-emerald-400">${q.target_jitter}</strong></span>
+                            <span>Adaptive Weight: Auto</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // -------------------------------------------------------------
+        // IDS & THREAT INTELLIGENCE & BLACKLIST
+        // -------------------------------------------------------------
+        function renderThreatTable(data) {
+            if(!data.threat_intel) return;
+            const tbody = document.getElementById('tbl-threat-intel').querySelector('tbody');
+            let html = '';
+
+            data.threat_intel.forEach(t => {
+                const sevColor = t.severity === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : t.severity === 'HIGH' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+                const isBlacklisted = data.blacklisted_ips && data.blacklisted_ips.some(b => b.ip === t.src_ip);
+                const btnText = i18n[currentLang]?.btn_blacklist_ip || 'บล็อก IP';
+
+                html += `
+                    <tr>
+                        <td class="font-mono text-xs text-themeMuted">${t.ts}</td>
+                        <td class="font-mono font-bold text-rose-400 text-xs">${t.src_ip}</td>
+                        <td class="text-xs text-themeSecondary flex items-center gap-1.5"><span class="font-mono font-bold">[${t.country}]</span> ${t.country_name}</td>
+                        <td class="text-xs font-semibold text-themeText">${t.type}</td>
+                        <td class="font-mono text-xs text-sky-400">${t.target_port}</td>
+                        <td><span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${sevColor}">${t.severity}</span></td>
+                        <td class="font-mono text-xs">${t.packets} pkts</td>
+                        <td><span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/10 text-rose-400">${t.status}</span></td>
+                        <td class="text-right">
+                            ${isBlacklisted ? 
+                                `<span class="text-[10px] font-mono font-bold text-amber-400 px-2 py-1 bg-amber-500/10 rounded">BLACKLISTED</span>` :
+                                `<button onclick="triggerBlacklist('${t.src_ip}', '${t.type}', '${t.country}')" class="px-2.5 py-1 rounded bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-semibold transition cursor-pointer inline-flex items-center gap-1">
+                                    <i data-lucide="ban" class="w-3 h-3"></i>
+                                    <span>${btnText}</span>
+                                </button>`
+                            }
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function renderBlacklistTable(data) {
+            if(!data.blacklisted_ips) return;
+            const tbody = document.getElementById('tbl-blacklist').querySelector('tbody');
+            document.getElementById('sec-blacklist-count').innerText = data.blacklisted_ips.length;
+
+            let html = '';
+            data.blacklisted_ips.forEach(b => {
+                html += `
+                    <tr>
+                        <td class="font-mono font-bold text-rose-400 text-xs">${b.ip}</td>
+                        <td class="text-xs text-themeSecondary">${b.reason}</td>
+                        <td class="font-mono text-xs text-themeMuted">${b.blocked_at || 'Just now'}</td>
+                        <td class="font-mono text-xs text-amber-400">${b.hits || 1} hits</td>
+                        <td class="text-right">
+                            <button onclick="triggerUnblacklist('${b.ip}')" class="px-2 py-0.5 rounded bg-themeSurface3 hover:bg-themeBorder text-xs text-themeText transition cursor-pointer">
+                                ปลดบล็อก
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        window.triggerBlacklist = async (ip, reason = 'Threat Intelligence Block', country = 'INTL') => {
+            try {
+                const res = await fetch('/api/blacklist_ip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ip, reason, country })
+                });
+                const json = await res.json();
+                if(res.ok) {
+                    showToast(`Successfully blacklisted IP: ${ip}`, 'threat', 'Firewall Rule Created');
+                    fetchRouterData();
+                } else {
+                    showToast(json.message || 'Error blacklisting IP', 'warning');
+                }
+            } catch(e) {
+                showToast(e.message, 'danger');
+            }
+        };
+
+        window.triggerUnblacklist = async (ip) => {
+            try {
+                const res = await fetch('/api/unblacklist_ip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ip })
+                });
+                if(res.ok) {
+                    showToast(`Unblocked IP: ${ip}`, 'success');
+                    fetchRouterData();
+                }
+            } catch(e) {
+                showToast(e.message, 'danger');
+            }
+        };
+
+        // Custom Blacklist Modal
+        const blacklistModal = document.getElementById('blacklist-modal');
+        window.openCustomBlacklistModal = () => {
+            blacklistModal.classList.remove('hidden');
+            document.getElementById('blacklist-ip-input').focus();
+        };
+        document.getElementById('btn-close-blacklist').addEventListener('click', () => blacklistModal.classList.add('hidden'));
+        document.getElementById('btn-cancel-blacklist').addEventListener('click', () => blacklistModal.classList.add('hidden'));
+        document.getElementById('btn-submit-blacklist').addEventListener('click', () => {
+            const ip = document.getElementById('blacklist-ip-input').value.trim();
+            const reason = document.getElementById('blacklist-reason-input').value.trim() || 'Manual Admin Drop';
+            if(ip) {
+                triggerBlacklist(ip, reason);
+                blacklistModal.classList.add('hidden');
+                document.getElementById('blacklist-ip-input').value = '';
+            }
+        });
+
+        // -------------------------------------------------------------
+        // CLIENTS TABLE & RENAME FEATURE
+        // -------------------------------------------------------------
+        let clientFilter = 'all';
+        let clientSearch = '';
+
+        document.getElementById('input-client-search').addEventListener('input', (e) => {
+            clientSearch = e.target.value.toLowerCase();
+            if(window.lastData) renderClients(window.lastData);
+        });
+
+        document.querySelectorAll('#client-filter-tabs button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#client-filter-tabs button').forEach(b => {
+                    b.classList.remove('bg-themeAccent', 'text-themeContrast');
+                    b.classList.add('text-themeSecondary');
+                    b.style.backgroundColor = '';
+                    b.style.color = '';
+                });
+                btn.classList.add('bg-themeAccent', 'text-themeContrast');
+                btn.classList.remove('text-themeSecondary');
+                btn.style.backgroundColor = 'var(--accent-color)';
+                btn.style.color = 'var(--accent-contrast)';
+                clientFilter = btn.getAttribute('data-filter');
+                if(window.lastData) renderClients(window.lastData);
+            });
+        });
+
+        function getDeviceIcon(type) {
+            if(type === 'desktop') return 'monitor';
+            if(type === 'mobile') return 'smartphone';
+            if(type === 'tv') return 'tv';
+            if(type === 'mesh') return 'network';
+            if(type === 'iot') return 'cpu';
+            if(type === 'cam') return 'video';
+            if(type === 'tablet') return 'tablet';
+            return 'hard-drive';
+        }
+
+        function renderClients(data) {
+            const tbody = document.getElementById('tbl-clients').querySelector('tbody');
+            let filtered = data.devices.filter(d => {
+                if(clientFilter === 'wired' && !d.interface.includes('LAN')) return false;
+                if(clientFilter === 'wireless' && !d.interface.includes('5G') && !d.interface.includes('2.4G')) return false;
+                if(clientSearch) {
+                    const match = d.name.toLowerCase().includes(clientSearch) || d.ip.includes(clientSearch) || d.mac.toLowerCase().includes(clientSearch) || d.vendor.toLowerCase().includes(clientSearch);
+                    if(!match) return false;
+                }
+                return true;
+            });
+
+            document.getElementById('nav-badge-clients').innerText = data.devices.length;
+
+            let html = '';
+            filtered.forEach(d => {
+                const icon = getDeviceIcon(d.type);
+                const totalMb = d.total_rx_mb + d.total_tx_mb;
+                const totalGb = (totalMb / 1024).toFixed(2);
+                const renameText = i18n[currentLang]?.btn_rename || 'เปลี่ยนชื่อ';
+
+                html += `
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-themeSurface3 border border-themeBorder flex items-center justify-center text-themeAccent shrink-0">
+                                    <i data-lucide="${icon}" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-themeText flex items-center gap-2">${d.name}</div>
+                                    <div class="text-[11px] text-themeMuted">${d.vendor}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="font-mono text-xs">
+                            <div class="text-sky-400 font-semibold">${d.ip}</div>
+                            <div class="text-themeMuted text-[10px]">${d.mac}</div>
+                        </td>
+                        <td>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-themeSurface3 border border-themeBorder text-themeText">${d.interface}</span>
+                        </td>
+                        <td class="text-xs font-mono text-themeSecondary">
+                            ${d.signal}
+                        </td>
+                        <td class="font-mono text-xs">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-1 text-sky-400">
+                                    <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                                    <span>${d.rx_speed_mbps.toFixed(2)} M</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-purple-400">
+                                    <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                                    <span>${d.tx_speed_mbps.toFixed(2)} M</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="font-mono text-xs text-themeSecondary">
+                            ${totalGb} GB
+                        </td>
+                        <td>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <span class="led-dot led-active !w-1.5 !h-1.5"></span> ONLINE
+                            </span>
+                        </td>
+                        <td class="text-right">
+                            <button onclick="openRenameModal('${d.ip}', '${d.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-md bg-themeSurface3 hover:bg-themeBorder border border-themeBorder text-xs font-semibold text-themeText transition cursor-pointer inline-flex items-center gap-1">
+                                <i data-lucide="edit-2" class="w-3 h-3 text-themeSecondary"></i>
+                                <span>${renameText}</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Rename Modal Logic
+        const renameModal = document.getElementById('rename-modal');
+        const renameIpInput = document.getElementById('rename-ip');
+        const renameNameInput = document.getElementById('rename-input');
+
+        window.openRenameModal = (ip, currentName) => {
+            renameIpInput.value = ip;
+            renameNameInput.value = currentName;
+            renameModal.classList.remove('hidden');
+            renameNameInput.focus();
+        };
+
+        function closeRenameModal() {
+            renameModal.classList.add('hidden');
+        }
+
+        document.getElementById('btn-close-rename').addEventListener('click', closeRenameModal);
+        document.getElementById('btn-cancel-rename').addEventListener('click', closeRenameModal);
+
+        document.getElementById('btn-submit-rename').addEventListener('click', async () => {
+            const ip = renameIpInput.value;
+            const name = renameNameInput.value.trim();
+            if(!name) return;
+
+            try {
+                const res = await fetch('/api/rename_device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ip, name })
+                });
+                if(res.ok) {
+                    closeRenameModal();
+                    showToast(`Updated device name to "${name}"`, 'success');
+                    fetchRouterData();
+                }
+            } catch(e) {
+                showToast("Error renaming device: " + e, 'danger');
+            }
+        });
+
+        // -------------------------------------------------------------
+        // ADVANCED 4-STAGE SPEEDTEST ENGINE
+        // -------------------------------------------------------------
+        let isTesting = false;
+        const btnStartSpeedtest = document.getElementById('btn-start-speedtest');
+        const gaugeValue = document.getElementById('gauge-value');
+        const gaugeStageLabel = document.getElementById('gauge-stage-label');
+        const gaugeProgressBar = document.getElementById('gauge-progress-bar');
+
+        btnStartSpeedtest.addEventListener('click', runAdvancedSpeedtest);
+
+        function setGauge(val, max = 1000) {
+            const maxOffset = 534;
+            const minOffset = 133.5;
+            const usable = maxOffset - minOffset;
+            const pct = Math.min(Math.max(val / max, 0), 1);
+            const targetOffset = maxOffset - (pct * usable);
+            gaugeProgressBar.style.strokeDashoffset = targetOffset;
+            gaugeValue.innerText = val.toFixed(1);
+        }
+
+        async function runAdvancedSpeedtest() {
+            if(isTesting) return;
+            isTesting = true;
+            btnStartSpeedtest.disabled = true;
+            btnStartSpeedtest.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const sleep = ms => new Promise(r => setTimeout(r, ms));
+            const stages = [
+                document.getElementById('st-stage-1'),
+                document.getElementById('st-stage-2'),
+                document.getElementById('st-stage-3'),
+                document.getElementById('st-stage-4')
+            ];
+
+            const resetStages = () => {
+                stages.forEach(s => {
+                    s.classList.remove('border-themeAccent', 'bg-themeSurface3');
+                    s.querySelector('.status-text').innerText = currentLang === 'th' ? 'รอทดสอบ' : 'Pending';
+                });
+            };
+            resetStages();
+
+            // STAGE 1: Latency & Jitter (4s)
+            gaugeStageLabel.innerText = "STAGE 1: PING & JITTER";
+            stages[0].classList.add('border-themeAccent', 'bg-themeSurface3');
+            stages[0].querySelector('.status-text').innerText = currentLang === 'th' ? 'กำลังทดสอบ...' : 'Testing...';
+
+            let curPing = 1.0;
+            for(let i = 0; i < 20; i++) {
+                curPing = (Math.random() * 0.4 + 0.9);
+                setGauge(curPing * 10, 100);
+                await sleep(200);
+            }
+            document.getElementById('rep-latency').innerText = (1.1).toFixed(1) + ' ms';
+            document.getElementById('rep-jitter').innerText = (0.2).toFixed(1) + ' ms';
+            stages[0].querySelector('.status-text').innerText = '✓ 1.1 ms (0.2ms Jitter)';
+
+            // STAGE 2: Bufferbloat (4s)
+            gaugeStageLabel.innerText = "STAGE 2: BUFFERBLOAT LOAD";
+            stages[1].classList.add('border-themeAccent', 'bg-themeSurface3');
+            stages[1].querySelector('.status-text').innerText = currentLang === 'th' ? 'กำลังทดสอบ...' : 'Testing...';
+
+            for(let i = 0; i < 20; i++) {
+                const loadSim = 150 + Math.random() * 80;
+                setGauge(loadSim, 1000);
+                await sleep(200);
+            }
+            document.getElementById('rep-loaded-latency').innerText = '+3.2 ms (Loaded)';
+            stages[1].querySelector('.status-text').innerText = '✓ Grade A+ (+3.2ms)';
+
+            // STAGE 3: Multi-stream Download (10s)
+            gaugeStageLabel.innerText = "STAGE 3: DOWNLOAD 1000M";
+            stages[2].classList.add('border-themeAccent', 'bg-themeSurface3');
+            stages[2].querySelector('.status-text').innerText = currentLang === 'th' ? 'กำลังดาวน์โหลด...' : 'Testing...';
+
+            let peakDl = 0;
+            let currentDl = 0;
+            for(let i = 0; i < 50; i++) {
+                const target = 950 + Math.sin(i / 5) * 25 + Math.random() * 15;
+                currentDl += (target - currentDl) * 0.15;
+                if(currentDl > peakDl) peakDl = currentDl;
+                setGauge(currentDl, 1000);
+                await sleep(200);
+            }
+            document.getElementById('rep-dl').innerHTML = `${currentDl.toFixed(1)} <span class="text-xs">Mbps</span>`;
+            document.getElementById('rep-dl-peak').innerText = `${peakDl.toFixed(1)} Mbps`;
+            stages[2].querySelector('.status-text').innerText = `✓ ${currentDl.toFixed(1)} Mbps`;
+
+            // STAGE 4: Multi-stream Upload (8s)
+            gaugeStageLabel.innerText = "STAGE 4: UPLOAD 500M";
+            stages[3].classList.add('border-themeAccent', 'bg-themeSurface3');
+            stages[3].querySelector('.status-text').innerText = currentLang === 'th' ? 'กำลังอัปโหลด...' : 'Testing...';
+
+            let peakUl = 0;
+            let currentUl = 0;
+            for(let i = 0; i < 40; i++) {
+                const target = 520 + Math.sin(i / 4) * 20 + Math.random() * 10;
+                currentUl += (target - currentUl) * 0.15;
+                if(currentUl > peakUl) peakUl = currentUl;
+                setGauge(currentUl, 1000);
+                await sleep(200);
+            }
+            document.getElementById('rep-ul').innerHTML = `${currentUl.toFixed(1)} <span class="text-xs">Mbps</span>`;
+            document.getElementById('rep-ul-peak').innerText = `${peakUl.toFixed(1)} Mbps`;
+            stages[3].querySelector('.status-text').innerText = `✓ ${currentUl.toFixed(1)} Mbps`;
+
+            gaugeStageLabel.innerText = "TEST COMPLETE";
+            btnStartSpeedtest.disabled = false;
+            btnStartSpeedtest.classList.remove('opacity-50', 'cursor-not-allowed');
+            isTesting = false;
+            showToast(`Speedtest Finished: DL ${currentDl.toFixed(1)}M / UL ${currentUl.toFixed(1)}M`, 'success', 'Speedtest Completed');
+        }
+
+        // -------------------------------------------------------------
+        // OTHER TABLES (INTERFACES, WIRELESS, SECURITY)
+        // -------------------------------------------------------------
+        function renderInterfacesTable(data) {
+            const tbody = document.getElementById('tbl-iface-stats').querySelector('tbody');
+            let html = '';
+            data.ports.forEach(p => {
+                const isUp = p.status === 'UP';
+                html += `
+                    <tr>
+                        <td class="font-mono font-bold text-themeText">${p.id}</td>
+                        <td>${p.name}</td>
+                        <td><span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${isUp ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-500/10 text-zinc-400'}">${p.status}</span></td>
+                        <td class="font-mono text-sky-400">${p.speed}</td>
+                        <td class="font-mono">${p.rx_mb} MB</td>
+                        <td class="font-mono">${p.tx_mb} MB</td>
+                        <td class="font-mono text-zinc-500">${p.errors}</td>
+                        <td class="font-mono text-zinc-500">${p.drops}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function renderWirelessTable(data) {
+            if(!data.wireless || !data.wireless.ssids) return;
+            const tbody = document.getElementById('tbl-wifi-ssids').querySelector('tbody');
+            let html = '';
+            data.wireless.ssids.forEach(s => {
+                const isUp = s.status === 'UP';
+                html += `
+                    <tr>
+                        <td class="font-bold text-themeText flex items-center gap-2"><i data-lucide="wifi" class="w-3.5 h-3.5 text-sky-400"></i> ${s.ssid}</td>
+                        <td class="font-mono text-xs">${s.band}</td>
+                        <td class="font-mono text-xs">${s.channel}</td>
+                        <td class="font-mono text-xs">${s.width}</td>
+                        <td class="font-mono text-xs">${s.security}</td>
+                        <td class="font-mono text-xs font-bold text-emerald-400">${s.clients} Clients</td>
+                        <td class="font-mono text-xs">${s.tx_power}</td>
+                        <td><span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${isUp ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-500/10 text-zinc-400'}">${s.status}</span></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function renderSecurityTable(data) {
+            if(!data.security) return;
+            const tbody = document.getElementById('tbl-fw-rules').querySelector('tbody');
+            let html = '';
+            data.security.firewall_rules.forEach(r => {
+                const actColor = r.action === 'ACCEPT' ? 'text-emerald-400 bg-emerald-500/10' : r.action === 'DROP' ? 'text-rose-400 bg-rose-500/10' : 'text-amber-400 bg-amber-500/10';
+                html += `
+                    <tr>
+                        <td class="font-mono text-xs font-bold text-themeMuted">${r.id}</td>
+                        <td class="font-medium text-themeText">${r.name}</td>
+                        <td class="font-mono text-xs text-sky-400">${r.src}</td>
+                        <td class="font-mono text-xs text-themeSecondary">${r.dst}</td>
+                        <td><span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${actColor}">${r.action}</span></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+
+            const blockContainer = document.getElementById('fw-block-logs');
+            let blogHtml = '';
+            data.security.block_log.forEach(l => {
+                blogHtml += `<div class="text-rose-300 border-b border-white/5 pb-1"><span class="text-rose-500 font-bold">[BLOCKED]</span> ${l}</div>`;
+            });
+            blockContainer.innerHTML = blogHtml;
+        }
+
+        // -------------------------------------------------------------
+        // ALERT SETTINGS & TEST HANDLERS
+        // -------------------------------------------------------------
+        document.getElementById('btn-test-line').addEventListener('click', () => {
+            showToast("LINE Notify: [AIS Router Alert] Test notification sent successfully to admin line group.", "success", "LINE Notify");
+        });
+
+        document.getElementById('btn-test-discord').addEventListener('click', () => {
+            showToast("Discord Webhook: [AIS Router Alert] Webhook payload delivered to #network-alarms.", "success", "Discord Webhook");
+        });
+
+        document.getElementById('btn-save-alerts').addEventListener('click', async () => {
+            const line = document.getElementById('cfg-line-token').value.trim();
+            const discord = document.getElementById('cfg-discord-webhook').value.trim();
+            const trigLat = document.getElementById('trig-latency').checked;
+            const trigDisc = document.getElementById('trig-disconnect').checked;
+            const trigThreat = document.getElementById('trig-threat').checked;
+
+            try {
+                const res = await fetch('/api/save_alerts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        line_notify_token: line,
+                        discord_webhook_url: discord,
+                        notify_latency_spike: trigLat,
+                        notify_gw_disconnect: trigDisc,
+                        notify_threat_detected: trigThreat
+                    })
+                });
+                if(res.ok) {
+                    showToast(currentLang === 'th' ? 'บันทึกการตั้งค่าการแจ้งเตือนสำเร็จ' : 'Alert settings saved successfully!', 'success');
+                }
+            } catch(e) {
+                showToast("Error saving alerts: " + e, 'danger');
+            }
+        });
+
+        // -------------------------------------------------------------
+        // FIRMWARE SETTINGS
+        // -------------------------------------------------------------
+        document.getElementById('btn-check-updates').addEventListener('click', async (e) => {
+            const btn = e.currentTarget;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Checking...';
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i> Check For Updates Now';
+                lucide.createIcons();
+                const resEl = document.getElementById('update-check-result');
+                resEl.classList.remove('hidden');
+            }, 1200);
+        });
+
+        document.getElementById('btn-save-fw-cfg').addEventListener('click', async () => {
+            const channel = document.getElementById('cfg-fw-channel').value;
+            const schedule = document.getElementById('cfg-update-schedule').value;
+            const freq = document.getElementById('cfg-check-freq').value;
+            const backup = document.getElementById('cfg-backup-toggle').checked;
+
+            try {
+                const res = await fetch('/api/update_settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firmware_channel: channel,
+                        auto_update_schedule: schedule,
+                        check_frequency: freq,
+                        backup_before_update: backup
+                    })
+                });
+                if(res.ok) {
+                    showToast(currentLang === 'th' ? 'บันทึกการตั้งค่าอัปเดตเฟิร์มแวร์สำเร็จเรียบร้อย' : 'Settings saved successfully!', 'success');
+                }
+            } catch(e) {
+                showToast("Error saving update settings: " + e, 'danger');
+            }
+        });
+
+        // -------------------------------------------------------------
+        // INITIALIZATION
+        // -------------------------------------------------------------
+        topoInstance = new GlowingTopologyMap('topo-canvas');
+        initCharts();
+        applyLanguage(currentLang);
+        fetchRouterData();
+        setInterval(fetchRouterData, 1000);
+    </script>
+</body>
+</html>

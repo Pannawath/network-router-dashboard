@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Sensitive credentials & local configs
+.env
+config.local.*
+
+# Logs & temp
+*.log
+temp/
+
+# IDE & OS
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
